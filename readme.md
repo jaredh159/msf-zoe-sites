@@ -1,0 +1,3 @@
+- FileServer https://api.rocket.rs/v0.5/rocket/fs/struct.FileServer
+- RawHtml
+- include_str!("index.html")
