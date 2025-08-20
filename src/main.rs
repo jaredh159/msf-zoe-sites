@@ -18,14 +18,41 @@ fn rocket() -> _ {
 #[rocket::get("/")]
 fn index() -> Html {
   let teachings = Teaching::load_most_recent(5);
-  let html = include_str!("assets/index.en.html").replace(
-    "{%audios%}",
-    &teachings
-      .into_iter()
-      .map(|t| component::Audio { teaching: t }.html())
-      .collect::<Vec<_>>()
-      .join("\n"),
-  );
+  let links = vec![
+    component::Link::new(
+      "Friends Library",
+      "https://www.friendslibrary.com",
+      "Market Street Fellowship has been so impacted by the writings of the early (not modern!) Society of Friends (1650-1800), that we put together a website where hundreds of their books are available for free, in a variety of different text and audio formats."
+    ),
+    component::Link::new(
+      "Gertrude",
+      "https://gertrude.app",
+      "Jared Henderson and Miciah Henderson have spent years building what we believe to be the safest parental control software in existence for Apple computers. There is also a corresponding Gertrude iPhone app that plugs some of the holes that Apple's Screen Time feature misses."
+    ),
+    component::Link::new(
+      "Ancient Path",
+      "https://hender.blog",
+      "More teachings and posts (in text and audio) from Jason Henderson on a variety of different subjects."
+    ),
+  ];
+  
+  let html = include_str!("assets/index.en.html")
+    .replace(
+      "{%audios%}",
+      &teachings
+        .into_iter()
+        .map(|t| component::Audio { teaching: t }.html())
+        .collect::<Vec<_>>()
+        .join("\n"),
+    )
+    .replace(
+      "{%links%}",
+      &links
+        .into_iter()
+        .map(|l| l.html())
+        .collect::<Vec<_>>()
+        .join("\n"),
+    );
   Html::new(&html)
 }
 

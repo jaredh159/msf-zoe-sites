@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Market Street Fellowship</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
       body {
         font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
           'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
       }
     </style>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body class="bg-gray-50 text-gray-900 leading-relaxed antialiased">
     <!-- Hero Section with Dark Green Background -->
@@ -78,44 +78,7 @@
             <img src="/msf-logo.webp" alt="" class="h-[38px] mr-4" />
             <span class="text-gray-900">Links</span>
           </h2>
-          <div class="space-y-6">
-            <a
-              href="https://www.friendslibrary.com"
-              class="block border-l-4 border-green-600 pl-6 pr-4 pt-4 pb-5 bg-[rgb(240,250,245)] hover:bg-[rgb(235,245,240)] rounded-r-lg transition-colors duration-200 no-underline"
-            >
-              <h3 class="text-xl font-medium mb-3 text-green-800">Friends Library</h3>
-              <p class="text-base text-gray-700 leading-6">
-                Market Street Fellowship has been so impacted by the writings of the early
-                (not modern!) Society of Friends (1650-1800), that we put together a
-                website where hundreds of their books are available for free, in a variety
-                of different text and audio formats.
-              </p>
-            </a>
-
-            <a
-              href="https://gertrude.app"
-              class="block border-l-4 border-green-600 pl-6 pr-4 pt-4 pb-5 bg-[rgb(240,250,245)] hover:bg-[rgb(235,245,240)] rounded-r-lg transition-colors duration-200 no-underline"
-            >
-              <h3 class="text-xl font-medium mb-3 text-green-800">Gertrude</h3>
-              <p class="text-base text-gray-700 leading-6">
-                Jared Henderson and Miciah Henderson have spent years building what we
-                believe to be the safest parental control software in existence for Apple
-                computers. There is also a corresponding Gertrude iPhone app that plugs
-                some of the holes that Apple's Screen Time feature misses.
-              </p>
-            </a>
-
-            <a
-              href="https://hender.blog"
-              class="block border-l-4 border-green-600 pl-6 pr-4 pt-4 pb-5 bg-[rgb(240,250,245)] hover:bg-[rgb(235,245,240)] rounded-r-lg transition-colors duration-200 no-underline"
-            >
-              <h3 class="text-xl font-medium mb-3 text-green-800">Ancient Path</h3>
-              <p class="text-base text-gray-700 leading-6">
-                More teachings and posts (in text and audio) from Jason Henderson on a
-                variety of different subjects.
-              </p>
-            </a>
-          </div>
+          <div class="space-y-6">{%links%}</div>
         </section>
       </main>
     </div>
