@@ -1,0 +1,26 @@
+<div
+  class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200"
+>
+  <div class="flex items-start justify-between sm:items-center">
+    <div class="flex-1">
+      <h3 class="font-medium text-gray-900 mb-0">{%title%}</h3>
+      <p class="text-sm text-gray-600 italic">{%speaker%}</p>
+      <div class="flex items-center text-sm text-gray-500 sm:hidden mt-2">
+        <span>{%date%}</span>
+        <span class="mx-2">•</span>
+        <span>{%duration%}</span>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4 text-sm text-gray-500">
+      <span class="hidden sm:inline">{%date%}</span>
+      <span class="hidden sm:inline">{%duration%}</span>
+      <button
+        class="p-2 rounded-full bg-[rgb(240,250,245)] hover:bg-[rgb(235,245,240)] transition-colors duration-200"
+      >
+        <svg class="w-4 h-4 text-green-700" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

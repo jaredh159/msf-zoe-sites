@@ -1,3 +1,4 @@
+use crate::internal::*;
 use rusqlite::{Connection, Result};
 
 #[derive(Debug, Clone)]
@@ -19,6 +20,25 @@ impl Teaching {
 
   pub fn load_all() -> Vec<Self> {
     Self::load_with_query("SELECT * FROM teachings ORDER BY date ASC", [])
+  }
+
+  pub fn datetime(&self) -> NaiveDateTime {
+    time::parse_sqlite_datetime(&self.date).unwrap()
+  }
+
+  pub fn short_date(&self) -> String {
+    time::format_short_date(self.datetime())
+  }
+
+  pub fn human_duration(&self) -> String {
+    time::format_duration(self.duration)
+  }
+
+  pub fn url(&self) -> String {
+    format!(
+      "https://msf-assets.nyc3.digitaloceanspaces.com/website-audios/{}",
+      self.filename
+    )
   }
 
   fn load_with_query<P>(query: &str, params: P) -> Vec<Self>

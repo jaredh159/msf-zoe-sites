@@ -1,29 +1,33 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
+
 use internal::*;
 use rocket::http::ContentType;
 
-mod html;
-mod teaching;
+pub mod component;
+pub mod html;
+pub mod teaching;
+pub mod time;
 
 #[rocket::launch]
 fn rocket() -> _ {
-  rocket::build().mount("/", rocket::routes![index, css, logo, check, testdb])
+  rocket::build().mount("/", rocket::routes![index, css, logo, check])
 }
 
 #[rocket::get("/")]
 fn index() -> Html {
-  Html::new(include_str!("assets/index.en.html"))
-}
-
-#[rocket::get("/test.db")]
-fn testdb() -> String {
-  let recent = Teaching::load_most_recent(3);
-  format!(
-    "{}",
-    recent
-      .iter()
-      .map(|t| format!("{} - {}\n", t.title, t.speaker))
-      .collect::<String>()
-  )
+  let teachings = Teaching::load_most_recent(5);
+  let template = include_str!("assets/index.en.html");
+  let html = template.replace(
+    "{%audios%}",
+    &teachings
+      .into_iter()
+      .map(|t| component::Audio { teaching: t }.html())
+      .collect::<Vec<_>>()
+      .join("\n"),
+  );
+  Html::new(&html)
 }
 
 #[rocket::get("/styles.css")]
@@ -47,4 +51,6 @@ fn check() -> &'static str {
 mod internal {
   pub use crate::html::*;
   pub use crate::teaching::*;
+  pub use crate::time;
+  pub use chrono::NaiveDateTime;
 }
