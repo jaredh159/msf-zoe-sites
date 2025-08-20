@@ -12,7 +12,7 @@ pub mod time;
 
 #[rocket::launch]
 fn rocket() -> _ {
-  rocket::build().mount("/", rocket::routes![index, css, logo, refresh_check])
+  rocket::build().mount("/", rocket::routes![index, audios, css, logo, refresh_check])
 }
 
 #[rocket::get("/")]
@@ -53,6 +53,20 @@ fn index() -> Html {
         .collect::<Vec<_>>()
         .join("\n"),
     );
+  Html::new(&html)
+}
+
+#[rocket::get("/audios")]
+fn audios() -> Html {
+  let teachings = Teaching::load_all();
+  let html = include_str!("assets/audios.html").replace(
+    "{%audios%}",
+    &teachings
+      .into_iter()
+      .map(|t| component::Audio { teaching: t }.html())
+      .collect::<Vec<_>>()
+      .join("\n"),
+  );
   Html::new(&html)
 }
 
