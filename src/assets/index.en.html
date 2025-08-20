@@ -1,13 +1,104 @@
-<!-- html boilerplate -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Web Page</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>Market Street Fellowship</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      }
+    </style>
   </head>
-  <body>
-    <h1 class="bg-blue-400">hello world</h1>
+  <body class="bg-gray-50 text-gray-900 leading-relaxed antialiased">
+    <!-- Hero Section with Dark Green Background -->
+    <div class="bg-gradient-to-br from-gray-900 to-green-900 text-white antialiased">
+      <div class="max-w-3xl mx-auto px-6 py-16">
+        <!-- Header -->
+        <header class="text-center mb-8">
+          <img
+            src="/msf-logo.webp"
+            alt="Market Street Fellowship Logo"
+            class="mx-auto mb-2 h-16 w-auto"
+          />
+          <h1 class="text-3xl md:text-4xl font-semibold text-white mb-3 tracking-tight">
+            Market Street Fellowship
+          </h1>
+        </header>
+
+        <!-- About Section -->
+        <section class="prose prose-lg prose-gray max-w-none">
+          <p class="text-lg leading-7 text-gray-100">
+            Market Street Fellowship is a non-denominational Christian church located in
+            Wadsworth, Ohio, and committed to a whole-hearted following of Christ in the
+            “ancient path” of the daily cross. We believe that the kingdom of God is not
+            in traditions and words, but in power; a power (called grace) that overcomes
+            sin, self, and the world, and experientially transforms the heart into the
+            image and nature of Christ.
+          </p>
+          <p class="text-lg leading-7 text-gray-100 mt-6">
+            Our desire is to walk together in His light, life and love, to surrender our
+            own will to His in all things, and to grow up together into Him who is the
+            Head, even Christ.
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto px-6 py-16">
+      <main class="space-y-16">
+        <!-- Audios Section -->
+        <section>
+          <h2 class="text-2xl font-semibold text-green-800 mb-6">Audios:</h2>
+          <p class="text-base text-gray-700 leading-6">
+            The audios offered below are recordings of informal (and generally
+            extemporaneous) times of sharing or teaching from our Sunday morning meetings.
+          </p>
+        </section>
+
+        <!-- Links Section -->
+        <section>
+          <h2 class="text-2xl font-semibold text-green-800 mb-8">Links:</h2>
+          <div class="space-y-8">
+            <div class="pl-5">
+              <h3 class="text-xl font-medium mb-3">
+                <a href="https://example.com" class="text-green-800 hover:text-green-900 underline">Friends Library</a>
+              </h3>
+              <p class="text-base text-gray-700 leading-6">
+                Market Street Fellowship has been so impacted by the writings of the early
+                (not modern!) Society of Friends (1650-1800), that we put together a
+                website where hundreds of their books are available for free, in a variety
+                of different text and audio formats.
+              </p>
+            </div>
+
+            <div class="pl-5">
+              <h3 class="text-xl font-medium mb-3">
+                <a href="https://example.com" class="text-green-800 hover:text-green-900 underline">Gertrude</a>
+              </h3>
+              <p class="text-base text-gray-700 leading-6">
+                Jared Henderson and Miciah Henderson have spent years building what we
+                believe to be the safest parental control software in existence for Apple
+                computers. There is also a corresponding Gertrude iPhone app that plugs
+                some of the holes that Apple's Screen Time feature misses.
+              </p>
+            </div>
+
+            <div class="pl-5">
+              <h3 class="text-xl font-medium mb-3">
+                <a href="https://example.com" class="text-green-800 hover:text-green-900 underline">Ancient Path</a>
+              </h3>
+              <p class="text-base text-gray-700 leading-6">
+                More teachings and posts (in text and audio) from Jason Henderson on a
+                variety of different subjects.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
   </body>
 </html>

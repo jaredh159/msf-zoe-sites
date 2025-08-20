@@ -13,9 +13,17 @@ fn css() -> (ContentType, &'static str) {
   (ContentType::CSS, include_str!("assets/output.css"))
 }
 
+#[get("/msf-logo.webp")]
+fn logo() -> (ContentType, &'static [u8]) {
+  (
+    ContentType::new("image", "webp"),
+    include_bytes!("assets/msf-logo.webp"),
+  )
+}
+
 #[launch]
 fn rocket() -> _ {
-  rocket::build().mount("/", routes![index, css, check])
+  rocket::build().mount("/", routes![index, css, logo, check])
 }
 
 #[derive(Responder)]
