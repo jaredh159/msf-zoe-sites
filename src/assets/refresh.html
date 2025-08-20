@@ -3,7 +3,7 @@
     let isServerDown = false;
 
     function checkServer() {
-      fetch('/check', { method: 'GET', cache: 'no-store' })
+      fetch('/check-9e328da2', { method: 'GET', cache: 'no-store' })
         .then((response) => {
           if (response.ok) {
             if (isServerDown) {

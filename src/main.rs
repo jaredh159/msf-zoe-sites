@@ -12,14 +12,13 @@ pub mod time;
 
 #[rocket::launch]
 fn rocket() -> _ {
-  rocket::build().mount("/", rocket::routes![index, css, logo, check])
+  rocket::build().mount("/", rocket::routes![index, css, logo, refresh_check])
 }
 
 #[rocket::get("/")]
 fn index() -> Html {
   let teachings = Teaching::load_most_recent(5);
-  let template = include_str!("assets/index.en.html");
-  let html = template.replace(
+  let html = include_str!("assets/index.en.html").replace(
     "{%audios%}",
     &teachings
       .into_iter()
@@ -43,10 +42,12 @@ fn logo() -> (ContentType, &'static [u8]) {
   )
 }
 
-#[rocket::get("/check")]
-fn check() -> &'static str {
-  "OK"
+#[rocket::get("/check-9e328da2")]
+fn refresh_check() -> rocket::response::status::NoContent {
+  rocket::response::status::NoContent
 }
+
+// helpers
 
 mod internal {
   pub use crate::html::*;
