@@ -5,6 +5,7 @@
 use internal::*;
 use rocket::http::ContentType;
 
+pub mod cached;
 pub mod component;
 pub mod html;
 pub mod podcast;
@@ -15,12 +16,20 @@ pub mod time;
 fn rocket() -> _ {
   rocket::build().mount(
     "/",
-    rocket::routes![index, audios, css, logo, refresh_check, podcast_xml],
+    rocket::routes![
+      index,
+      audios,
+      css,
+      logo_webp,
+      logo_svg,
+      refresh_check,
+      podcast_xml
+    ],
   )
 }
 
 #[rocket::get("/")]
-fn index() -> Html {
+fn index() -> Cached<Html> {
   let teachings = Teaching::load_most_recent(5);
   let links = vec![
     component::Link::new(
@@ -57,11 +66,11 @@ fn index() -> Html {
         .collect::<Vec<_>>()
         .join("\n"),
     );
-  Html::new(&html)
+  Cached::new(Html::new(&html), Cache::ONE_HOUR)
 }
 
 #[rocket::get("/audios")]
-fn audios() -> Html {
+fn audios() -> Cached<Html> {
   let teachings = Teaching::load_all();
   let html = include_str!("assets/audios.html").replace(
     "{%audios%}",
@@ -71,19 +80,44 @@ fn audios() -> Html {
       .collect::<Vec<_>>()
       .join("\n"),
   );
-  Html::new(&html)
+  Cached::new(Html::new(&html), Cache::ONE_HOUR)
 }
 
 #[rocket::get("/styles.css")]
-fn css() -> (ContentType, &'static str) {
-  (ContentType::CSS, include_str!("assets/output.css"))
+fn css() -> Cached<(ContentType, &'static str)> {
+  Cached::new(
+    (ContentType::CSS, include_str!("assets/output.css")),
+    Cache::ONE_HOUR,
+  )
 }
 
 #[rocket::get("/msf-logo.webp")]
-fn logo() -> (ContentType, &'static [u8]) {
-  (
-    ContentType::new("image", "webp"),
-    include_bytes!("assets/msf-logo.webp"),
+fn logo_webp() -> Cached<(ContentType, &'static [u8])> {
+  Cached::new(
+    (
+      ContentType::new("image", "webp"),
+      include_bytes!("assets/msf-logo.webp"),
+    ),
+    Cache::ONE_HOUR,
+  )
+}
+
+#[rocket::get("/msf-logo.svg")]
+fn logo_svg() -> Cached<(ContentType, &'static str)> {
+  Cached::new(
+    (
+      ContentType::new("image", "svg+xml"),
+      include_str!("assets/logo.svg"),
+    ),
+    Cache::ONE_HOUR,
+  )
+}
+
+#[rocket::get("/podcast.xml")]
+fn podcast_xml() -> Cached<(ContentType, String)> {
+  Cached::new(
+    (ContentType::new("application", "rss+xml"), podcast::xml()),
+    Cache::ONE_MINUTE * 10,
   )
 }
 
@@ -92,14 +126,10 @@ fn refresh_check() -> rocket::response::status::NoContent {
   rocket::response::status::NoContent
 }
 
-#[rocket::get("/podcast.xml")]
-fn podcast_xml() -> (ContentType, String) {
-  (ContentType::new("application", "rss+xml"), podcast::xml())
-}
-
 // helpers
 
 mod internal {
+  pub use crate::cached::*;
   pub use crate::html::*;
   pub use crate::teaching::*;
   pub use crate::time;
