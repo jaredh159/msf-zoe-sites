@@ -1,0 +1,13 @@
+<item>
+  <title>{%title%}</title>
+  <enclosure url="{%url%}" length="{%filesize%}" type="audio/mpeg" />
+  <itunes:author>{%speaker%}</itunes:author>
+  <itunes:summary>{%description%}</itunes:summary>
+  <itunes:subtitle>{%description%}</itunes:subtitle>
+  <description>{%description%}</description>
+  <guid>guid-{%id}</guid>
+  <pubDate>{%date%}</pubDate>
+  <itunes:duration>{%duration%}</itunes:duration>
+  <itunes:explicit>false</itunes:explicit>
+  <itunes:episodeType>full</itunes:episodeType>
+</item>

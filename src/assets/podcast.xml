@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+  xmlns:podcast="https://podcastindex.org/namespace/1.0"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <atom:link href="https://audios.marketstreetfellowship.com" rel="self" type="application/rss+xml" />
+    <title>MSF Audios</title>
+    <itunes:subtitle>Informal teachings from Market Street Fellowship</itunes:subtitle>
+    <link>https://www.marketstreetfellowship.com/audios</link>
+    <language>en</language>
+    <itunes:author>Market Street Fellowship</itunes:author>
+    <description>Informal teachings from Market Street Fellowship</description>
+    <itunes:summary>Informal teachings from Market Street Fellowship</itunes:summary>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    <itunes:owner>
+      <itunes:name>Jared Henderson</itunes:name>
+      <itunes:email>jared.thomas.henderson@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:image href="https://msf-assets.nyc3.digitaloceanspaces.com/podcast-artwork.png" />
+    <image>
+      <url>https://msf-assets.nyc3.digitaloceanspaces.com/podcast-artwork.png</url>
+      <title>MSF Audios</title>
+      <link>https://www.marketstreetfellowship.com/audios</link>
+    </image>
+    <itunes:category text="Religion &amp; Spirituality">
+      <itunes:category text="Christianity" />
+    </itunes:category>
+    {%episodes%}
+    </channel>
+</rss>

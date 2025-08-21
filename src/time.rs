@@ -23,6 +23,11 @@ pub fn format_duration(seconds: i64) -> String {
   }
 }
 
+/// Formats a NaiveDateTime into RFC 2822 format string
+pub fn format_rfc2822(datetime: NaiveDateTime) -> String {
+  datetime.format("%a, %d %b %Y %H:%M:%S GMT").to_string()
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -81,5 +86,27 @@ mod tests {
       let result = format_duration(seconds);
       assert_eq!(result, expected, "Failed for {} seconds", seconds);
     }
+  }
+
+  #[test]
+  fn test_format_rfc2822() {
+    let datetime = NaiveDate::from_ymd_opt(2024, 7, 28)
+      .unwrap()
+      .and_hms_opt(12, 30, 45)
+      .unwrap();
+    
+    let result = format_rfc2822(datetime);
+    assert_eq!(result, "Sun, 28 Jul 2024 12:30:45 GMT");
+  }
+
+  #[test]
+  fn test_format_rfc2822_single_digit_day() {
+    let datetime = NaiveDate::from_ymd_opt(2025, 1, 3)
+      .unwrap()
+      .and_hms_opt(9, 15, 0)
+      .unwrap();
+    
+    let result = format_rfc2822(datetime);
+    assert_eq!(result, "Fri, 03 Jan 2025 09:15:00 GMT");
   }
 }

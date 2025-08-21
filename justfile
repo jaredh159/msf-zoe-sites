@@ -5,7 +5,7 @@ dev:
   concurrently -n css,srv -c cyan,green "just watch-css" "just serve"
 
 serve:
-  watchexec --clear --restart --watch src --exts rs,html,css \
+  watchexec --clear --restart --watch src --exts rs,html,css,xml \
     --ignore src/assets/output.css ROCKET_CLI_COLORS=0 cargo run
 
 build-css:

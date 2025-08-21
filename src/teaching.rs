@@ -30,6 +30,10 @@ impl Teaching {
     time::format_short_date(self.datetime())
   }
 
+  pub fn rfc2822_date(&self) -> String {
+    time::format_rfc2822(self.datetime())
+  }
+
   pub fn human_duration(&self) -> String {
     time::format_duration(self.duration)
   }
