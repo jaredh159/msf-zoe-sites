@@ -1,5 +1,4 @@
 use crate::internal::*;
-use rusqlite::{Connection, Result};
 
 #[derive(Debug, Clone)]
 pub struct Teaching {

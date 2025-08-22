@@ -3,7 +3,6 @@
 #![allow(unused_imports)]
 
 use internal::*;
-use rocket::http::ContentType;
 
 pub mod cached;
 pub mod component;
@@ -14,6 +13,7 @@ pub mod index;
 pub mod podcast;
 pub mod teaching;
 pub mod time;
+pub mod zoe;
 
 #[rocket::launch]
 fn rocket() -> _ {
@@ -21,6 +21,7 @@ fn rocket() -> _ {
     "/",
     rocket::routes![
       home,
+      spanish,
       audios,
       gathering_details,
       css,
@@ -46,12 +47,17 @@ fn home() -> Cached<Html> {
   Cached::new(index::get(), Cache::ONE_HOUR)
 }
 
+#[rocket::get("/spanish")]
+fn spanish() -> Cached<Html> {
+  Cached::new(zoe::get(), Cache::ONE_HOUR)
+}
+
 #[rocket::get("/audios")]
 fn audios() -> Cached<Html> {
   let mut teachings = Teaching::load_all();
   teachings.reverse();
   let html = include_str!("assets/html/audios.html")
-    .replace("{%head%}", &html::head(Some("Audios")))
+    .replace("{%head%}", &html::head(Some("Audios"), Language::English))
     .replace(
       "{%audios%}",
       &teachings
@@ -70,7 +76,7 @@ fn gathering_details() -> Cached<Html> {
   let (thursday, friday, saturday, sunday) = date::gathering_detail_dates(display_year);
 
   let html = include_str!("assets/html/gathering-details.html")
-    .replace("{%head%}", &html::head(Some("Spring Gathering Details")))
+    .replace("{%head%}", &html::head(Some("Spring Gathering Details"), Language::English))
     .replace("{%gathering_year%}", &display_year.to_string())
     .replace("{%thursday_day%}", &thursday)
     .replace("{%friday_day%}", &friday)
@@ -116,4 +122,8 @@ mod internal {
   pub use crate::teaching::*;
   pub use crate::time;
   pub use chrono::{Datelike, NaiveDateTime, Utc};
+  pub use rocket::http::ContentType;
+  pub use rocket::response::{Responder, Result as ResponseResult};
+  pub use rocket::{Request, Response};
+  pub use rusqlite::{Connection, Result};
 }

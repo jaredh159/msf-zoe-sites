@@ -42,7 +42,7 @@ pub fn get() -> Html {
   };
 
   let html = include_str!("assets/html/index.en.html")
-    .replace("{%head%}", &html::head(None))
+    .replace("{%head%}", &html::head(None, Language::English))
     .replace("{%banner%}", &banner_html)
     .replace(
       "{%audios%}",

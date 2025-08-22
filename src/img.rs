@@ -1,5 +1,4 @@
 use crate::internal::*;
-use rocket::http::ContentType;
 
 #[rocket::get("/msf-logo.webp")]
 pub fn logo_webp() -> Cached<(ContentType, &'static [u8])> {

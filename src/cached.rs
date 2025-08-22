@@ -1,6 +1,4 @@
-use rocket::response::{Responder, Result};
-use rocket::{Request, Response};
-use chrono::Utc;
+use crate::internal::*;
 
 pub struct Cached<R> {
   responder: R,
@@ -14,7 +12,7 @@ impl<R> Cached<R> {
 }
 
 impl<'r, R: Responder<'r, 'static>> Responder<'r, 'static> for Cached<R> {
-  fn respond_to(self, request: &'r Request<'_>) -> Result<'static> {
+  fn respond_to(self, request: &'r Request<'_>) -> ResponseResult<'static> {
     let mut response = self.responder.respond_to(request)?;
     if cfg!(debug_assertions) {
       response.set_raw_header("Cache-Control", "no-cache, no-store, must-revalidate");
