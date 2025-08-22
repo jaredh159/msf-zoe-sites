@@ -9,6 +9,7 @@ pub mod cached;
 pub mod component;
 pub mod date;
 pub mod html;
+pub mod img;
 pub mod index;
 pub mod podcast;
 pub mod teaching;
@@ -23,18 +24,18 @@ fn rocket() -> _ {
       audios,
       gathering_details,
       css,
-      logo_webp,
-      logo_svg,
-      apple_podcasts,
-      google_podcasts,
-      overcast,
-      spotify,
-      rss_png,
-      favicon_ico,
-      favicon_16x16,
-      favicon_32x32,
       podcast_xml,
       refresh_check,
+      img::logo_webp,
+      img::logo_svg,
+      img::apple_podcasts,
+      img::google_podcasts,
+      img::overcast,
+      img::spotify,
+      img::rss_png,
+      img::favicon_ico,
+      img::favicon_16x16,
+      img::favicon_32x32,
     ],
   )
 }
@@ -84,65 +85,6 @@ fn css() -> Cached<(ContentType, &'static str)> {
   )
 }
 
-#[rocket::get("/msf-logo.webp")]
-fn logo_webp() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/msf-logo.webp"))
-}
-
-#[rocket::get("/apple-podcasts.webp")]
-fn apple_podcasts() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/apple-podcasts.webp"))
-}
-
-#[rocket::get("/google-podcasts.webp")]
-fn google_podcasts() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/google-podcasts.webp"))
-}
-
-#[rocket::get("/overcast.webp")]
-fn overcast() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/overcast.webp"))
-}
-
-#[rocket::get("/spotify.webp")]
-fn spotify() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/spotify.webp"))
-}
-
-#[rocket::get("/rss.png")]
-fn rss_png() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("png", include_bytes!("assets/img/rss.png"))
-}
-
-#[rocket::get("/favicon.ico")]
-fn favicon_ico() -> Cached<(ContentType, &'static [u8])> {
-  Cached::new(
-    (ContentType::Icon, include_bytes!("assets/img/favicon.ico")),
-    Cache::ONE_WEEK,
-  )
-}
-
-#[rocket::get("/favicon-16x16.png")]
-fn favicon_16x16() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("png", include_bytes!("assets/img/favicon-16x16.png"))
-}
-
-#[rocket::get("/favicon-32x32.png")]
-fn favicon_32x32() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("png", include_bytes!("assets/img/favicon-32x32.png"))
-}
-
-#[rocket::get("/msf-logo.svg")]
-fn logo_svg() -> Cached<(ContentType, &'static str)> {
-  Cached::new(
-    (
-      ContentType::new("image", "svg+xml"),
-      include_str!("assets/img/logo.svg"),
-    ),
-    Cache::ONE_WEEK,
-  )
-}
-
 #[rocket::get("/podcast.xml")]
 fn podcast_xml() -> Cached<(ContentType, String)> {
   Cached::new(
@@ -157,16 +99,6 @@ fn refresh_check() -> rocket::response::status::NoContent {
 }
 
 // helpers
-
-fn serve_image(
-  image_type: &'static str,
-  bytes: &'static [u8],
-) -> Cached<(ContentType, &'static [u8])> {
-  Cached::new(
-    (ContentType::new("image", image_type), bytes),
-    Cache::ONE_WEEK,
-  )
-}
 
 mod internal {
   pub use crate::cached::*;
