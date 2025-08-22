@@ -7,7 +7,9 @@ use rocket::http::ContentType;
 
 pub mod cached;
 pub mod component;
+pub mod date;
 pub mod html;
+pub mod index;
 pub mod podcast;
 pub mod teaching;
 pub mod time;
@@ -17,7 +19,7 @@ fn rocket() -> _ {
   rocket::build().mount(
     "/",
     rocket::routes![
-      index,
+      home,
       audios,
       css,
       logo_webp,
@@ -34,44 +36,8 @@ fn rocket() -> _ {
 }
 
 #[rocket::get("/")]
-fn index() -> Cached<Html> {
-  let teachings = Teaching::load_most_recent(5);
-  let links = vec![
-    component::Link::new(
-      "Friends Library",
-      "https://www.friendslibrary.com",
-      "Market Street Fellowship has been so impacted by the writings of the early (not modern!) Society of Friends (1650-1800), that we put together a website where hundreds of their books are available for free, in a variety of different text and audio formats.",
-    ),
-    component::Link::new(
-      "Gertrude",
-      "https://gertrude.app",
-      "Jared Henderson and Miciah Henderson have spent years building what we believe to be the safest parental control software in existence for Apple computers. There is also a corresponding Gertrude iPhone app that plugs some of the holes that Apple's Screen Time feature misses.",
-    ),
-    component::Link::new(
-      "Ancient Path",
-      "https://hender.blog",
-      "More teachings and posts (in text and audio) from Jason Henderson on a variety of different subjects.",
-    ),
-  ];
-
-  let html = include_str!("assets/html/index.en.html")
-    .replace(
-      "{%audios%}",
-      &teachings
-        .into_iter()
-        .map(|t| component::Audio { teaching: t }.html())
-        .collect::<Vec<_>>()
-        .join("\n"),
-    )
-    .replace(
-      "{%links%}",
-      &links
-        .into_iter()
-        .map(|l| l.html())
-        .collect::<Vec<_>>()
-        .join("\n"),
-    );
-  Cached::new(Html::new(&html), Cache::ONE_HOUR)
+fn home() -> Cached<Html> {
+  Cached::new(index::get(), Cache::ONE_HOUR)
 }
 
 #[rocket::get("/audios")]
