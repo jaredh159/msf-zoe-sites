@@ -30,6 +30,9 @@ fn rocket() -> _ {
       overcast,
       spotify,
       rss_png,
+      favicon_ico,
+      favicon_16x16,
+      favicon_32x32,
       podcast_xml,
       refresh_check,
     ],
@@ -44,14 +47,16 @@ fn home() -> Cached<Html> {
 #[rocket::get("/audios")]
 fn audios() -> Cached<Html> {
   let teachings = Teaching::load_all();
-  let html = include_str!("assets/html/audios.html").replace(
-    "{%audios%}",
-    &teachings
-      .into_iter()
-      .map(|t| component::Audio { teaching: t }.html())
-      .collect::<Vec<_>>()
-      .join("\n"),
-  );
+  let html = include_str!("assets/html/audios.html")
+    .replace("{%head%}", &html::head(Some("Audios")))
+    .replace(
+      "{%audios%}",
+      &teachings
+        .into_iter()
+        .map(|t| component::Audio { teaching: t }.html())
+        .collect::<Vec<_>>()
+        .join("\n"),
+    );
   Cached::new(Html::new(&html), Cache::ONE_HOUR)
 }
 
@@ -60,7 +65,9 @@ fn gathering_details() -> Cached<Html> {
   let (year, month, day) = date::current_date_parts();
   let display_year = date::gathering_year_to_display(year, month, day);
   let (thursday, friday, saturday, sunday) = date::gathering_detail_dates(display_year);
+
   let html = include_str!("assets/html/gathering-details.html")
+    .replace("{%head%}", &html::head(Some("Spring Gathering Details")))
     .replace("{%gathering_year%}", &display_year.to_string())
     .replace("{%thursday_day%}", &thursday)
     .replace("{%friday_day%}", &friday)
@@ -107,6 +114,24 @@ fn rss_png() -> Cached<(ContentType, &'static [u8])> {
   serve_image("png", include_bytes!("assets/img/rss.png"))
 }
 
+#[rocket::get("/favicon.ico")]
+fn favicon_ico() -> Cached<(ContentType, &'static [u8])> {
+  Cached::new(
+    (ContentType::Icon, include_bytes!("assets/img/favicon.ico")),
+    Cache::ONE_WEEK,
+  )
+}
+
+#[rocket::get("/favicon-16x16.png")]
+fn favicon_16x16() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("png", include_bytes!("assets/img/favicon-16x16.png"))
+}
+
+#[rocket::get("/favicon-32x32.png")]
+fn favicon_32x32() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("png", include_bytes!("assets/img/favicon-32x32.png"))
+}
+
 #[rocket::get("/msf-logo.svg")]
 fn logo_svg() -> Cached<(ContentType, &'static str)> {
   Cached::new(
@@ -145,7 +170,7 @@ fn serve_image(
 
 mod internal {
   pub use crate::cached::*;
-  pub use crate::html::*;
+  pub use crate::html::{self, *};
   pub use crate::teaching::*;
   pub use crate::time;
   pub use chrono::{Datelike, NaiveDateTime, Utc};

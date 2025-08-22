@@ -29,3 +29,13 @@ impl Html {
     html
   }
 }
+
+pub fn head(page: Option<&str>) -> String {
+  include_str!("assets/html/head.html").replace(
+    "{%page_title%}",
+    &format!(
+      "{}Market Street Fellowship",
+      page.map_or("".to_string(), |p| format!("{} | ", p))
+    ),
+  )
+}

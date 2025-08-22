@@ -23,7 +23,7 @@ pub fn get() -> Html {
   ];
 
   let (year, month, day) = date::current_date_parts();
-  // let (year, month, day) = (2026, 5, 22);
+  // let (year, month, day) = (2026, 5, 22); // <-- test dates
 
   let banner_html = if date::is_during_spring_gathering(year, month, day) {
     include_str!("assets/html/ongoing-banner.html")
@@ -42,6 +42,7 @@ pub fn get() -> Html {
   };
 
   let html = include_str!("assets/html/index.en.html")
+    .replace("{%head%}", &html::head(None))
     .replace("{%banner%}", &banner_html)
     .replace(
       "{%audios%}",
