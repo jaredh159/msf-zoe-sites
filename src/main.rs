@@ -21,6 +21,7 @@ fn rocket() -> _ {
     rocket::routes![
       home,
       audios,
+      gathering_details,
       css,
       logo_webp,
       logo_svg,
@@ -51,6 +52,20 @@ fn audios() -> Cached<Html> {
       .collect::<Vec<_>>()
       .join("\n"),
   );
+  Cached::new(Html::new(&html), Cache::ONE_HOUR)
+}
+
+#[rocket::get("/gathering-details")]
+fn gathering_details() -> Cached<Html> {
+  let (year, month, day) = date::current_date_parts();
+  let display_year = date::gathering_year_to_display(year, month, day);
+  let (thursday, friday, saturday, sunday) = date::gathering_detail_dates(display_year);
+  let html = include_str!("assets/html/gathering-details.html")
+    .replace("{%gathering_year%}", &display_year.to_string())
+    .replace("{%thursday_day%}", &thursday)
+    .replace("{%friday_day%}", &friday)
+    .replace("{%saturday_day%}", &saturday)
+    .replace("{%sunday_day%}", &sunday);
   Cached::new(Html::new(&html), Cache::ONE_HOUR)
 }
 
@@ -133,5 +148,5 @@ mod internal {
   pub use crate::html::*;
   pub use crate::teaching::*;
   pub use crate::time;
-  pub use chrono::NaiveDateTime;
+  pub use chrono::{Datelike, NaiveDateTime, Utc};
 }

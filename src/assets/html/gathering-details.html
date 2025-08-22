@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spring Gathering Details - Market Street Fellowship</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      }
+    </style>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-gray-50 text-gray-900 leading-relaxed antialiased">
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto px-6 pt-8 pb-48">
+      <main class="space-y-16">
+        <!-- Gathering Details Section -->
+        <section>
+          <div class="text-left mb-8 italic min-[820px]:-ml-10">
+            <a
+              href="/"
+              class="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >
+              ← home
+            </a>
+          </div>
+          <h2 class="text-[26px] font-semibold mb-5 flex items-center min-[820px]:-ml-10">
+            <img src="/msf-logo.svg" alt="" class="h-[38px] mr-3" />
+            <span class="text-gray-900">{%gathering_year%} Spring Gathering Details</span>
+          </h2>
+          <div class="prose prose-lg max-w-none">
+            <p class="text-lg text-gray-700 leading-7 mb-6">
+              MSF gatherings are free and open to all. If you have never attended one of our
+              spring or fall gatherings, they are not like most programmed Christian
+              conferences, where speakers and activities are planned out in advance. Most of
+              our sessions are just times of gathering together, waiting upon the Lord in
+              silence, and then sharing, teaching, exhorting, praying, etc. as we feel
+              specifically led by the Spirit of God. Some meetings may pass by entirely in
+              silence as each individual seeks to receive from the life-giving presence of
+              the Lord in his or her own heart. The afternoon sessions are times dedicated
+              to teaching, followed by questions or discussion with those who are present or
+              joining us online.
+            </p>
+
+            <h3 id="zoom" class="text-xl font-semibold text-gray-900 mb-4">Join Online</h3>
+            <p class="text-base text-gray-700 leading-6 mb-4">
+              All meetings can be joined remotely through Zoom, with
+              <a
+                href="https://us06web.zoom.us/j/3307145370?pwd=RHN1VDFiaHUzaDUwdUR5Q2EzYUUyZz09"
+                class="text-blue-600 hover:text-blue-800 underline"
+                >this meeting link</a
+              >. In case you have trouble with that link, the meeting ID is
+              <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">330 714 5370</code> and the password is <code class="bg-gray-100 px-2 py-1 rounded text-sm font-mono">msf</code>.
+            </p>
+            <p class="text-base text-gray-700 leading-6 mb-4">
+              There will be separate meetings for children during each of the sessions, led
+              by some adults from MSF.
+            </p>
+            <p class="text-base text-red-600 font-semibold leading-6 mb-8">
+              * Please let us know if you plan to attend, so we can plan ahead for
+              meals, childcare, etc.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Dates</h3>
+            <p class="text-base text-gray-700 leading-6 mb-6">
+              Friday May {%friday_day%} through Sunday May {%sunday_day%}. Sessions begin Friday morning and end
+              Sunday noon.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Location</h3>
+            <p class="text-base text-gray-700 leading-6 mb-6">
+              Meetings will be held at the Boneta House (7330 Boneta Rd, Wadsworth OH,
+              44281). More details to come.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Schedule</h3>
+            <p class="text-base text-gray-700 leading-6 mb-4">
+              There will be a welcome bonfire at <strong>Jason and Jessie's house</strong> at
+              6:30pm on Thursday night May {%thursday_day%} for those who are in town early. 478 Koontz
+              Rd, Wadsworth OH, 44281
+            </p>
+            
+            <div class="space-y-4 mb-6">
+              <div>
+                <p class="font-semibold text-gray-900 mb-2">Friday {%friday_day%}:</p>
+                <ul class="list-disc list-inside text-base text-gray-700 leading-6 ml-4 space-y-1">
+                  <li>9:30am - Morning Meeting</li>
+                  <li>12:00 - 3:30pm Break</li>
+                  <li>3:30pm - Teaching and Discussion</li>
+                  <li>5:30pm - Dinner (provided)</li>
+                  <li>7:00pm - Evening Meeting</li>
+                </ul>
+              </div>
+              
+              <div>
+                <p class="font-semibold text-gray-900 mb-2">Saturday {%saturday_day%}:</p>
+                <ul class="list-disc list-inside text-base text-gray-700 leading-6 ml-4 space-y-1">
+                  <li>9:30am - Morning Meeting</li>
+                  <li>12:00 - 3:30pm Break</li>
+                  <li>3:30pm - Teaching and Discussion</li>
+                  <li>5:30pm - Dinner (provided)</li>
+                  <li>7:00pm - Evening Meeting</li>
+                </ul>
+              </div>
+              
+              <div>
+                <p class="font-semibold text-gray-900 mb-2">Sunday {%sunday_day%}:</p>
+                <ul class="list-disc list-inside text-base text-gray-700 leading-6 ml-4 space-y-1">
+                  <li>9:30am - Morning Meeting</li>
+                  <li>12:00 - Lunch (provided)</li>
+                </ul>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Other Info</h3>
+            <p class="text-base text-gray-700 leading-6 mb-4">
+              There will be separate meetings for children during each of the sessions, led
+              by some adults from MSF. Three meals will be provided during the weekend (one
+              each day), as well as coffee and some snacks. All sessions will be broadcast
+              live on Zoom for those who are unable to attend.
+            </p>
+            <p class="text-base text-gray-700 leading-6 mb-6">
+              <em><span class="text-red-600">Note:</span> It would be helpful if those planning
+              to come could let us know by emailing us at this address:
+              <a
+                href="mailto:MSFPrinting@gmail.com"
+                class="text-blue-600 hover:text-blue-800 underline"
+                >MSFPrinting@gmail.com</a
+              >.</em>
+              This will help us plan ahead for food, childcare, etc. And if you are bringing
+              children, please let us know their ages so we can plan accordingly.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Lodging</h3>
+            <p class="text-base text-gray-700 leading-6 mb-6">
+              There are a number of hotels available in the Wadsworth, Akron and Fairlawn
+              area.
+            </p>
+
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Questions?</h3>
+            <p class="text-base text-gray-700 leading-6">
+              Call Jason Henderson 330-714-5370 or Rod Costa at 330-419-1527 or email:
+              <a
+                href="mailto:MSFPrinting@gmail.com"
+                class="text-blue-600 hover:text-blue-800 underline"
+                >MSFPrinting@gmail.com</a
+              >
+              with any questions.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+
