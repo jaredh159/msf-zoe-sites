@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audios - Market Street Fellowship</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+          'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+      }
+    </style>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="bg-gray-50 text-gray-900 leading-relaxed antialiased">
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto px-6 pt-8 pb-48">
+      <main class="space-y-16">
+        <!-- Audios Section -->
+        <section>
+          <div class="text-left mb-8 italic min-[820px]:-ml-10">
+            <a
+              href="/"
+              class="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
+            >
+              ← home
+            </a>
+          </div>
+          <h2 class="text-[26px] font-semibold mb-5 flex items-center min-[820px]:-ml-10">
+            <img src="/msf-logo.svg" alt="" class="h-[38px] mr-3" />
+            <span class="text-gray-900"
+              >Audios<span class="hidden sm:inline">
+                from Market Street Fellowship</span
+              ></span
+            >
+          </h2>
+          <p class="text-lg text-gray-700 leading-7 mb-6">
+            The audios offered below are recordings of informal (and generally
+            extemporaneous) times of sharing or teaching from our Sunday morning meetings.
+            These messages are also available as a podcast.
+          </p>
+
+          <div
+            class="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 gap-3 mb-12 sm:max-w-xl ml-8"
+          >
+            <a
+              href="#"
+              class="flex items-center space-x-2 transition-colors duration-200 group"
+            >
+              <img
+                src="/apple-podcasts.webp"
+                alt="Apple Podcasts"
+                class="h-6 w-6 rounded-md"
+              />
+              <span class="text-base text-gray-700 group-hover:text-gray-900"
+                >Apple Podcasts</span
+              >
+            </a>
+            <a
+              href="#"
+              class="flex items-center space-x-2 transition-colors duration-200 group"
+            >
+              <img
+                src="/google-podcasts.webp"
+                alt="Google Podcasts"
+                class="h-6 w-6 rounded-md border border-gray-300"
+              />
+              <span class="text-base text-gray-700 group-hover:text-gray-900"
+                >Google Podcasts</span
+              >
+            </a>
+            <a
+              href="#"
+              class="flex items-center space-x-2 transition-colors duration-200 group"
+            >
+              <img src="/spotify.webp" alt="Spotify" class="h-6 w-6 rounded-md" />
+              <span class="text-base text-gray-700 group-hover:text-gray-900"
+                >Spotify</span
+              >
+            </a>
+            <a
+              href="#"
+              class="flex items-center space-x-2 transition-colors duration-200 group"
+            >
+              <img src="/overcast.webp" alt="Overcast" class="h-6 w-6 rounded-md" />
+              <span class="text-base text-gray-700 group-hover:text-gray-900"
+                >Overcast</span
+              >
+            </a>
+            <a
+              href="/podcast.xml"
+              onclick="copyRSSLink(event)"
+              class="flex items-center space-x-2 transition-colors duration-200 group"
+            >
+              <img src="/rss.png" alt="RSS" class="h-6 w-6 rounded-md" />
+              <span
+                id="rss-text"
+                class="text-base text-gray-700 group-hover:text-gray-900"
+                >RSS</span
+              >
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">{%audios%}</div>
+        </section>
+      </main>
+    </div>
+    <script>
+      function copyRSSLink(event) {
+        event.preventDefault();
+        const rssUrl = event.currentTarget.href;
+        navigator.clipboard
+          .writeText(rssUrl)
+          .then(function () {
+            const textElement = document.getElementById('rss-text');
+            const originalText = textElement.textContent;
+            textElement.textContent = 'URL copied!';
+            setTimeout(function () {
+              textElement.textContent = originalText;
+            }, 2000);
+          })
+          .catch(function () {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = rssUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            const textElement = document.getElementById('rss-text');
+            const originalText = textElement.textContent;
+            textElement.textContent = 'URL copied!';
+            setTimeout(function () {
+              textElement.textContent = originalText;
+            }, 2000);
+          });
+      }
+    </script>
+  </body>
+</html>

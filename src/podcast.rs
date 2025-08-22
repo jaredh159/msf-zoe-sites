@@ -4,7 +4,7 @@ pub fn xml() -> String {
   let mut teachings = Teaching::load_all();
   teachings.reverse();
   let items: Vec<String> = teachings.iter().map(|t| episode(t)).collect();
-  let template = include_str!("assets/podcast.xml");
+  let template = include_str!("assets/xml/podcast.xml");
   template.replace("{%episodes%}", &items.join(""))
 }
 
@@ -13,7 +13,7 @@ fn episode(teaching: &Teaching) -> String {
     "\"{}\" by {}, from Market Street Fellowship",
     teaching.title, teaching.speaker
   );
-  let template = include_str!("assets/episode.xml");
+  let template = include_str!("assets/xml/episode.xml");
   template
     .replace("{%title%}", &teaching.title)
     .replace("{%speaker%}", &teaching.speaker)

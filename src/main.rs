@@ -22,8 +22,13 @@ fn rocket() -> _ {
       css,
       logo_webp,
       logo_svg,
+      apple_podcasts,
+      google_podcasts,
+      overcast,
+      spotify,
+      rss_png,
+      podcast_xml,
       refresh_check,
-      podcast_xml
     ],
   )
 }
@@ -49,7 +54,7 @@ fn index() -> Cached<Html> {
     ),
   ];
 
-  let html = include_str!("assets/index.en.html")
+  let html = include_str!("assets/html/index.en.html")
     .replace(
       "{%audios%}",
       &teachings
@@ -72,7 +77,7 @@ fn index() -> Cached<Html> {
 #[rocket::get("/audios")]
 fn audios() -> Cached<Html> {
   let teachings = Teaching::load_all();
-  let html = include_str!("assets/audios.html").replace(
+  let html = include_str!("assets/html/audios.html").replace(
     "{%audios%}",
     &teachings
       .into_iter()
@@ -86,20 +91,39 @@ fn audios() -> Cached<Html> {
 #[rocket::get("/styles.css")]
 fn css() -> Cached<(ContentType, &'static str)> {
   Cached::new(
-    (ContentType::CSS, include_str!("assets/output.css")),
+    (ContentType::CSS, include_str!("assets/css/output.css")),
     Cache::ONE_HOUR,
   )
 }
 
 #[rocket::get("/msf-logo.webp")]
 fn logo_webp() -> Cached<(ContentType, &'static [u8])> {
-  Cached::new(
-    (
-      ContentType::new("image", "webp"),
-      include_bytes!("assets/msf-logo.webp"),
-    ),
-    Cache::ONE_HOUR,
-  )
+  serve_image("webp", include_bytes!("assets/img/msf-logo.webp"))
+}
+
+#[rocket::get("/apple-podcasts.webp")]
+fn apple_podcasts() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("webp", include_bytes!("assets/img/apple-podcasts.webp"))
+}
+
+#[rocket::get("/google-podcasts.webp")]
+fn google_podcasts() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("webp", include_bytes!("assets/img/google-podcasts.webp"))
+}
+
+#[rocket::get("/overcast.webp")]
+fn overcast() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("webp", include_bytes!("assets/img/overcast.webp"))
+}
+
+#[rocket::get("/spotify.webp")]
+fn spotify() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("webp", include_bytes!("assets/img/spotify.webp"))
+}
+
+#[rocket::get("/rss.png")]
+fn rss_png() -> Cached<(ContentType, &'static [u8])> {
+  serve_image("png", include_bytes!("assets/img/rss.png"))
 }
 
 #[rocket::get("/msf-logo.svg")]
@@ -107,9 +131,9 @@ fn logo_svg() -> Cached<(ContentType, &'static str)> {
   Cached::new(
     (
       ContentType::new("image", "svg+xml"),
-      include_str!("assets/logo.svg"),
+      include_str!("assets/img/logo.svg"),
     ),
-    Cache::ONE_HOUR,
+    Cache::ONE_WEEK,
   )
 }
 
@@ -127,6 +151,16 @@ fn refresh_check() -> rocket::response::status::NoContent {
 }
 
 // helpers
+
+fn serve_image(
+  image_type: &'static str,
+  bytes: &'static [u8],
+) -> Cached<(ContentType, &'static [u8])> {
+  Cached::new(
+    (ContentType::new("image", image_type), bytes),
+    Cache::ONE_WEEK,
+  )
+}
 
 mod internal {
   pub use crate::cached::*;
