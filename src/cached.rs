@@ -1,5 +1,6 @@
 use rocket::response::{Responder, Result};
 use rocket::{Request, Response};
+use chrono::Utc;
 
 pub struct Cached<R> {
   responder: R,
@@ -20,6 +21,7 @@ impl<'r, R: Responder<'r, 'static>> Responder<'r, 'static> for Cached<R> {
     } else {
       response.set_raw_header("Cache-Control", format!("public, max-age={}", self.max_age));
     }
+    response.set_raw_header("X-Served-At", Utc::now().to_rfc3339());
     Ok(response)
   }
 }

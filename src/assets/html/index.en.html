@@ -71,7 +71,29 @@
           </h2>
           <div class="space-y-6">{%links%}</div>
         </section>
+
+        <!-- Contact Section -->
+        <section>
+          <h2 class="text-[26px] font-semibold mb-5 flex items-center min-[820px]:-ml-12">
+            <img src="/msf-logo.svg" alt="" class="h-[38px] mr-3.5" />
+            <span class="text-gray-900">Contact</span>
+          </h2>
+          <p class="text-base text-gray-700 leading-6 mb-8">
+            To contact us for any reason, send an email to Jason Henderson at 
+            <span id="email-address" class="font-mono">moc.liamg@yajredneh</span>.
+          </p>
+        </section>
       </main>
     </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const emailElement = document.getElementById('email-address');
+        if (emailElement) {
+          const reversedEmail = emailElement.textContent;
+          const email = reversedEmail.split('').reverse().join('');
+          emailElement.innerHTML = '<a href="mailto:' + email + '" class="text-blue-600 hover:text-blue-800 transition-colors">' + email + '</a>';
+        }
+      });
+    </script>
   </body>
 </html>

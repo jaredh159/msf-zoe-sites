@@ -6,7 +6,7 @@ dev:
 
 serve:
   watchexec --clear --restart --watch src --exts rs,html,css,xml,webp,png,svg \
-    --ignore {{cssdir}}/output.css ROCKET_CLI_COLORS=0 cargo run
+    --ignore {{cssdir}}/output.css ROCKET_PORT=4848 ROCKET_CLI_COLORS=0 cargo run
 
 build-css:
   {{tailwind}} -i {{cssdir}}/styles.css -o {{cssdir}}/output.css
@@ -18,6 +18,6 @@ format:
   prettier --write src/assets/html/*.html
 
 
+cssdir := "src/assets/css"
 # https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.12
 tailwind := "tailwindcss-cli-v4-1-2"
-cssdir := "src/assets/css"

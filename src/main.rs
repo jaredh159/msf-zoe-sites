@@ -25,6 +25,7 @@ fn rocket() -> _ {
       gathering_details,
       css,
       podcast_xml,
+      robots_txt,
       refresh_check,
       img::logo_webp,
       img::logo_svg,
@@ -47,7 +48,8 @@ fn home() -> Cached<Html> {
 
 #[rocket::get("/audios")]
 fn audios() -> Cached<Html> {
-  let teachings = Teaching::load_all();
+  let mut teachings = Teaching::load_all();
+  teachings.reverse();
   let html = include_str!("assets/html/audios.html")
     .replace("{%head%}", &html::head(Some("Audios")))
     .replace(
@@ -90,6 +92,14 @@ fn podcast_xml() -> Cached<(ContentType, String)> {
   Cached::new(
     (ContentType::new("application", "rss+xml"), podcast::xml()),
     Cache::ONE_MINUTE * 10,
+  )
+}
+
+#[rocket::get("/robots.txt")]
+fn robots_txt() -> Cached<(ContentType, &'static str)> {
+  Cached::new(
+    (ContentType::Plain, "User-agent: *\nAllow: /\n"),
+    Cache::ONE_WEEK,
   )
 }
 
