@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  {%head%}
+  <body class="bg-gray-50 text-gray-900 leading-relaxed antialiased">
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto px-6 pt-16 pb-48">
+      <main class="space-y-16">
+        <!-- Add Teaching Section -->
+        <section>
+          <h2 class="text-[26px] font-semibold mb-5 flex items-center min-[820px]:-ml-10">
+            <img src="/msf-logo.svg" alt="" class="h-[38px] mr-3" />
+            <span class="text-gray-900">Add New Teaching</span>
+          </h2>
+
+          {%flash_message%}
+
+          <form
+            method="post"
+            action="/add-teaching-5b2e3090"
+            enctype="multipart/form-data"
+            class="space-y-6 max-w-2xl"
+            id="teachingForm"
+          >
+            <div>
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-2"
+                >Title</label
+              >
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                placeholder="The Will of God, pt. 2"
+                autofocus
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label for="speaker" class="block text-sm font-medium text-gray-700 mb-2"
+                >Speaker</label
+              >
+              <input
+                type="text"
+                id="speaker"
+                name="speaker"
+                required
+                placeholder="Jason Henderson"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label for="context" class="block text-sm font-medium text-gray-700 mb-2"
+                >Context (optional)</label
+              >
+              <input
+                type="text"
+                id="context"
+                name="context"
+                placeholder="2026 Spring Gathering"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:gap-4">
+              <div class="flex-1">
+                <label for="duration" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Duration (seconds)</label
+                >
+                <input
+                  type="number"
+                  id="duration"
+                  name="duration"
+                  required
+                  placeholder="2314"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+
+              <div class="flex-1">
+                <label for="date" class="block text-sm font-medium text-gray-700 mb-2"
+                  >Date</label
+                >
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="audio_file" class="block text-sm font-medium text-gray-700 mb-2"
+                >Audio File (MP3)</label
+              >
+              <input
+                type="file"
+                id="audio_file"
+                name="audio_file"
+                accept="audio/mp3,audio/mpeg"
+                required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+            </div>
+
+            <div class="pt-4">
+              <button
+                type="submit"
+                id="submitBtn"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
+              >
+                Add Teaching
+              </button>
+            </div>
+
+            <!-- Validation Error Display -->
+            <div
+              id="validationErrors"
+              class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md"
+            >
+              <ul id="errorList" class="list-disc list-inside"></ul>
+            </div>
+
+            <!-- Upload Progress Display -->
+            <div
+              id="uploadProgress"
+              class="hidden bg-blue-50 border border-blue-200 px-4 py-3 rounded-md"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-blue-700">Uploading...</span>
+                <span id="progressPercent" class="text-sm text-blue-600">0%</span>
+              </div>
+              <div class="w-full bg-blue-200 rounded-full h-2">
+                <div
+                  id="progressBar"
+                  class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <div class="mt-2 text-xs text-blue-600">
+                <span id="uploadStatus">Preparing upload...</span>
+              </div>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Upload with progress tracking
+      function uploadWithProgress(form, submitBtn) {
+        const formData = new FormData(form);
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        // Show progress indicator
+        uploadProgress.classList.remove('hidden');
+        uploadProgress.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Disable submit button
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uploading...';
+        submitBtn.classList.remove('hover:bg-blue-700');
+        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        // Create XMLHttpRequest for progress tracking
+        const xhr = new XMLHttpRequest();
+
+        // Track upload progress
+        xhr.upload.addEventListener('progress', function (e) {
+          if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+
+            progressBar.style.width = percentComplete + '%';
+            progressPercent.textContent = percentComplete + '%';
+
+            if (percentComplete < 100) {
+              const loaded = formatFileSize(e.loaded);
+              const total = formatFileSize(e.total);
+              uploadStatus.textContent = `Uploaded ${loaded} of ${total}`;
+            } else {
+              uploadStatus.textContent = 'Processing upload...';
+            }
+          }
+        });
+
+        // Handle upload completion
+        xhr.addEventListener('load', function () {
+          if (xhr.status === 200) {
+            // Check if response is a redirect
+            const responseURL = xhr.responseURL;
+            if (responseURL && responseURL !== window.location.href) {
+              window.location.href = responseURL;
+            } else {
+              // Handle non-redirect response
+              uploadStatus.textContent = 'Upload completed successfully!';
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            }
+          } else {
+            // Handle error
+            uploadStatus.textContent = 'Upload failed. Please try again.';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Add Teaching';
+            submitBtn.classList.add('hover:bg-blue-700');
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            setTimeout(() => {
+              uploadProgress.classList.add('hidden');
+            }, 3000);
+          }
+        });
+
+        // Handle upload error
+        xhr.addEventListener('error', function () {
+          uploadStatus.textContent =
+            'Upload failed. Please check your connection and try again.';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Add Teaching';
+          submitBtn.classList.add('hover:bg-blue-700');
+          submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+          setTimeout(() => {
+            uploadProgress.classList.add('hidden');
+          }, 3000);
+        });
+
+        // Handle upload timeout
+        xhr.addEventListener('timeout', function () {
+          uploadStatus.textContent = 'Upload timed out. Please try again.';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Add Teaching';
+          submitBtn.classList.add('hover:bg-blue-700');
+          submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+          setTimeout(() => {
+            uploadProgress.classList.add('hidden');
+          }, 3000);
+        });
+
+        // Set timeout (10 minutes for large files)
+        xhr.timeout = 10 * 60 * 1000;
+
+        // Open and send the request
+        xhr.open('POST', form.action);
+        xhr.send(formData);
+      }
+
+      // Format file size for display
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      // Form validation
+      function validateForm() {
+        const errors = [];
+        const title = document.getElementById('title').value.trim();
+        const speaker = document.getElementById('speaker').value.trim();
+        const duration = document.getElementById('duration').value.trim();
+        const date = document.getElementById('date').value.trim();
+        const audioFile = document.getElementById('audio_file').files[0];
+
+        // Reset field styles
+        resetFieldStyles();
+
+        if (!title) {
+          errors.push('Title is required');
+          highlightField('title');
+        }
+
+        if (!speaker) {
+          errors.push('Speaker is required');
+          highlightField('speaker');
+        }
+
+        if (!duration) {
+          errors.push('Duration is required');
+          highlightField('duration');
+        } else if (isNaN(duration) || parseInt(duration) <= 0) {
+          errors.push('Duration must be a positive number');
+          highlightField('duration');
+        }
+
+        if (!date) {
+          errors.push('Date is required');
+          highlightField('date');
+        }
+
+        if (!audioFile) {
+          errors.push('Audio file is required');
+          highlightField('audio_file');
+        } else {
+          // Check file type
+          const allowedTypes = ['audio/mp3', 'audio/mpeg'];
+          if (!allowedTypes.includes(audioFile.type)) {
+            errors.push('Audio file must be an MP3 file');
+            highlightField('audio_file');
+          }
+
+          // Check file size (limit to 100MB)
+          const maxSize = 100 * 1024 * 1024; // 100MB in bytes
+          if (audioFile.size > maxSize) {
+            errors.push('Audio file must be smaller than 100MB');
+            highlightField('audio_file');
+          }
+        }
+
+        return errors;
+      }
+
+      function highlightField(fieldId) {
+        const field = document.getElementById(fieldId);
+        field.classList.remove('border-gray-300', 'focus:ring-blue-500');
+        field.classList.add('border-red-500', 'focus:ring-red-500');
+      }
+
+      function resetFieldStyles() {
+        const fields = ['title', 'speaker', 'duration', 'date', 'audio_file'];
+        fields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          field.classList.remove('border-red-500', 'focus:ring-red-500');
+          field.classList.add('border-gray-300', 'focus:ring-blue-500');
+        });
+      }
+
+      function showErrors(errors) {
+        const errorContainer = document.getElementById('validationErrors');
+        const errorList = document.getElementById('errorList');
+
+        if (errors.length > 0) {
+          errorList.innerHTML = errors.map((error) => `<li>${error}</li>`).join('');
+          errorContainer.classList.remove('hidden');
+          errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          errorContainer.classList.add('hidden');
+        }
+      }
+
+      // Auto-hide flash messages after 5 seconds
+      document.addEventListener('DOMContentLoaded', function () {
+        const flashMessages = document.querySelectorAll('.flash-message');
+        flashMessages.forEach(function (message) {
+          setTimeout(function () {
+            message.style.transition = 'opacity 0.5s ease-out';
+            message.style.opacity = '0';
+            setTimeout(function () {
+              message.remove();
+              // Remove query parameters after flash message is removed
+              const url = new URL(window.location);
+              url.searchParams.delete('success');
+              url.searchParams.delete('error');
+              window.history.replaceState({}, '', url);
+            }, 500);
+          }, 5000);
+        });
+
+        // Add form validation
+        const form = document.getElementById('teachingForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          const errors = validateForm();
+          showErrors(errors);
+
+          if (errors.length === 0) {
+            // Upload with progress tracking
+            uploadWithProgress(form, submitBtn);
+          }
+        });
+
+        // Real-time validation feedback
+        const requiredFields = ['title', 'speaker', 'duration', 'date', 'audio_file'];
+        requiredFields.forEach((fieldId) => {
+          const field = document.getElementById(fieldId);
+          field.addEventListener('input', function () {
+            // Hide errors when user starts typing
+            document.getElementById('validationErrors').classList.add('hidden');
+            // Reset field style
+            field.classList.remove('border-red-500', 'focus:ring-red-500');
+            field.classList.add('border-gray-300', 'focus:ring-blue-500');
+          });
+
+          field.addEventListener('change', function () {
+            // Hide errors when user changes file input
+            document.getElementById('validationErrors').classList.add('hidden');
+            field.classList.remove('border-red-500', 'focus:ring-red-500');
+            field.classList.add('border-gray-300', 'focus:ring-blue-500');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+

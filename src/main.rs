@@ -3,7 +3,9 @@
 #![allow(unused_imports)]
 
 use internal::*;
+use rocket::data::ToByteUnit;
 
+pub mod add_teaching;
 pub mod cached;
 pub mod component;
 pub mod date;
@@ -11,6 +13,7 @@ pub mod html;
 pub mod img;
 pub mod msf;
 pub mod podcast;
+pub mod s3;
 pub mod teaching;
 pub mod time;
 pub mod zoe;
@@ -18,6 +21,12 @@ pub mod zoe;
 #[rocket::launch]
 fn rocket() -> _ {
   rocket::build()
+    .configure(
+      rocket::Config::figment()
+        .merge(("limits.form", "100MiB"))
+        .merge(("limits.file", "100MiB"))
+        .merge(("limits.data-form", "100MiB")),
+    )
     .mount(
       "/",
       rocket::routes![
@@ -29,6 +38,8 @@ fn rocket() -> _ {
         podcast_xml,
         robots_txt,
         refresh_check,
+        add_teaching::form,
+        add_teaching::submit,
         img::logo_webp,
         img::logo_svg,
         img::apple_podcasts,
@@ -166,6 +177,6 @@ mod internal {
   pub use chrono::{Datelike, NaiveDateTime, Utc};
   pub use rocket::http::ContentType;
   pub use rocket::response::{Responder, Result as ResponseResult};
-  pub use rocket::{Request, Response};
+  pub use rocket::{Request, Response, response::Redirect};
   pub use rusqlite::{Connection, Result};
 }

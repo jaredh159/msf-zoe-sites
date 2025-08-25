@@ -23,6 +23,24 @@ impl Teaching {
     Self::load_with_query("SELECT * FROM teachings ORDER BY date ASC", [])
   }
 
+  pub fn save(&self) -> Result<i64, Box<dyn std::error::Error>> {
+    let conn = Connection::open("teachings.db")?;
+    let result = conn.execute(
+      "INSERT INTO teachings (title, speaker, context, filename, filesize, duration, date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      (
+        &self.title,
+        &self.speaker,
+        &self.context,
+        &self.filename,
+        &self.filesize,
+        &self.duration,
+        &format!("{} 12:00:00", self.date),
+      ),
+    )?;
+
+    Ok(conn.last_insert_rowid())
+  }
+
   pub fn datetime(&self) -> NaiveDateTime {
     time::parse_sqlite_datetime(&self.date).unwrap()
   }

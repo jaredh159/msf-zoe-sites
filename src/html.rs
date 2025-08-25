@@ -16,9 +16,9 @@ impl Html {
   pub fn new(content: &str) -> Self {
     let mut html = Self { content: content.to_string() };
     if cfg!(debug_assertions) {
-      html
-        .content
-        .push_str(include_str!("assets/html/refresh.html"));
+      // html
+      //   .content
+      //   .push_str(include_str!("assets/html/refresh.html"));
     } else {
       html.content = html.content.replace(
         "</body>",
