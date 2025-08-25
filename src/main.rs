@@ -9,7 +9,7 @@ pub mod component;
 pub mod date;
 pub mod html;
 pub mod img;
-pub mod index;
+pub mod msf;
 pub mod podcast;
 pub mod teaching;
 pub mod time;
@@ -20,8 +20,8 @@ fn rocket() -> _ {
   rocket::build().mount(
     "/",
     rocket::routes![
-      home,
-      spanish,
+      msf_home,
+      zoe_home,
       audios,
       gathering_details,
       css,
@@ -43,12 +43,12 @@ fn rocket() -> _ {
 }
 
 #[rocket::get("/")]
-fn home() -> Cached<Html> {
-  Cached::new(index::get(), Cache::ONE_HOUR)
+fn msf_home() -> Cached<Html> {
+  Cached::new(msf::get(), Cache::ONE_HOUR)
 }
 
-#[rocket::get("/spanish")]
-fn spanish() -> Cached<Html> {
+#[rocket::get("/zoe")]
+fn zoe_home() -> Cached<Html> {
   Cached::new(zoe::get(), Cache::ONE_HOUR)
 }
 
@@ -57,7 +57,7 @@ fn audios() -> Cached<Html> {
   let mut teachings = Teaching::load_all();
   teachings.reverse();
   let html = include_str!("assets/html/audios.html")
-    .replace("{%head%}", &html::head(Some("Audios"), Language::English))
+    .replace("{%head%}", &html::head(Some("Audios"), Lang::English))
     .replace(
       "{%audios%}",
       &teachings
@@ -76,7 +76,10 @@ fn gathering_details() -> Cached<Html> {
   let (thursday, friday, saturday, sunday) = date::gathering_detail_dates(display_year);
 
   let html = include_str!("assets/html/gathering-details.html")
-    .replace("{%head%}", &html::head(Some("Spring Gathering Details"), Language::English))
+    .replace(
+      "{%head%}",
+      &html::head(Some("Spring Gathering Details"), Lang::English),
+    )
     .replace("{%gathering_year%}", &display_year.to_string())
     .replace("{%thursday_day%}", &thursday)
     .replace("{%friday_day%}", &friday)
@@ -118,6 +121,7 @@ fn refresh_check() -> rocket::response::status::NoContent {
 
 mod internal {
   pub use crate::cached::*;
+  pub use crate::component;
   pub use crate::html::{self, *};
   pub use crate::teaching::*;
   pub use crate::time;

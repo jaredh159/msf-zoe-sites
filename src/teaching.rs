@@ -10,6 +10,8 @@ pub struct Teaching {
   pub filesize: i64,
   pub duration: i64,
   pub date: String,
+  pub text_url: Option<&'static str>,
+  pub lang: Lang,
 }
 
 impl Teaching {
@@ -39,7 +41,8 @@ impl Teaching {
 
   pub fn url(&self) -> String {
     format!(
-      "https://msf-assets.nyc3.digitaloceanspaces.com/website-audios/{}",
+      "https://msf-assets.nyc3.digitaloceanspaces.com/{}-audios/{}",
+      if self.lang == Lang::English { "msf" } else { "zoe" },
       self.filename
     )
   }
@@ -61,10 +64,29 @@ impl Teaching {
           filesize: row.get(5)?,
           duration: row.get(6)?,
           date: row.get(7)?,
+          text_url: None,
+          lang: Lang::English,
         })
       })
       .unwrap();
 
     rows.collect::<Result<Vec<_>, _>>().unwrap()
+  }
+}
+
+impl Default for Teaching {
+  fn default() -> Self {
+    Self {
+      id: 0,
+      title: String::new(),
+      speaker: "Jason Henderson".to_string(),
+      context: None,
+      filename: String::new(),
+      filesize: 0,
+      duration: 0,
+      date: String::new(),
+      text_url: None,
+      lang: Lang::Spanish,
+    }
   }
 }

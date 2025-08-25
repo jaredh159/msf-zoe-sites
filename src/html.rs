@@ -1,7 +1,7 @@
 use crate::internal::*;
 
-#[derive(Clone, Copy)]
-pub enum Language {
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum Lang {
   English,
   Spanish,
 }
@@ -36,18 +36,18 @@ impl Html {
   }
 }
 
-pub fn head(page: Option<&str>, language: Language) -> String {
+pub fn head(page: Option<&str>, language: Lang) -> String {
   let (site_name, description) = match language {
-    Language::English => (
+    Lang::English => (
       "Market Street Fellowship",
-      "Market Street Fellowship is a non-denominational Christian church located in Wadsworth, Ohio, and committed to a whole-hearted following of Christ in the ancient path of the daily cross. We believe that the kingdom of God is not in traditions and words, but in power; a power (called grace) that overcomes sin, self, and the world, and experientially transforms the heart into the image and nature of Christ."
+      "Market Street Fellowship is a non-denominational Christian church located in Wadsworth, Ohio, and committed to a whole-hearted following of Christ in the ancient path of the daily cross. We believe that the kingdom of God is not in traditions and words, but in power; a power (called grace) that overcomes sin, self, and the world, and experientially transforms the heart into the image and nature of Christ.",
     ),
-    Language::Spanish => (
+    Lang::Spanish => (
       "Zoe Costa Rica",
-      "Zoe Costa Rica es un sitio web dedicado a la entrega absoluta del corazón a Jesucristo en el camino antiguo de la cruz diaria. Creemos que el reino de Dios no consiste en tradiciones ni palabras, sino en poder; un poder (llamado gracia) que vence el pecado, el yo y el mundo, y transforma genuinamente el corazón a la imagen y naturaleza de Cristo."
+      "Zoe Costa Rica es un sitio web dedicado a la entrega absoluta del corazón a Jesucristo en el camino antiguo de la cruz diaria. Creemos que el reino de Dios no consiste en tradiciones ni palabras, sino en poder; un poder (llamado gracia) que vence el pecado, el yo y el mundo, y transforma genuinamente el corazón a la imagen y naturaleza de Cristo.",
     ),
   };
-  
+
   include_str!("assets/html/head.html")
     .replace(
       "{%page_title%}",
