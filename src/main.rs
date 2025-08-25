@@ -17,29 +17,31 @@ pub mod zoe;
 
 #[rocket::launch]
 fn rocket() -> _ {
-  rocket::build().mount(
-    "/",
-    rocket::routes![
-      msf_home,
-      zoe_home,
-      audios,
-      gathering_details,
-      css,
-      podcast_xml,
-      robots_txt,
-      refresh_check,
-      img::logo_webp,
-      img::logo_svg,
-      img::apple_podcasts,
-      img::google_podcasts,
-      img::overcast,
-      img::spotify,
-      img::rss_png,
-      img::favicon_ico,
-      img::favicon_16x16,
-      img::favicon_32x32,
-    ],
-  )
+  rocket::build()
+    .mount(
+      "/",
+      rocket::routes![
+        msf_home,
+        zoe_home,
+        audios,
+        gathering_details,
+        css,
+        podcast_xml,
+        robots_txt,
+        refresh_check,
+        img::logo_webp,
+        img::logo_svg,
+        img::apple_podcasts,
+        img::google_podcasts,
+        img::overcast,
+        img::spotify,
+        img::rss_png,
+        img::favicon_ico,
+        img::favicon_16x16,
+        img::favicon_32x32,
+      ],
+    )
+    .register("/", rocket::catchers![not_found])
 }
 
 #[rocket::get("/")]
@@ -115,6 +117,42 @@ fn robots_txt() -> Cached<(ContentType, &'static str)> {
 #[rocket::get("/check-9e328da2")]
 fn refresh_check() -> rocket::response::status::NoContent {
   rocket::response::status::NoContent
+}
+
+#[rocket::catch(404)]
+fn not_found(req: &rocket::Request) -> Cached<Html> {
+  let is_spanish = req
+    .headers()
+    .get_one("host")
+    .map(|host| host == "zoecostarica.com")
+    .unwrap_or(false);
+
+  let html = if is_spanish {
+    include_str!("assets/html/404.html")
+      .replace(
+        "{%head%}",
+        &html::head(Some("No Encontrado"), Lang::Spanish),
+      )
+      .replace("{%home_link%}", "/zoe")
+      .replace("{%home_text%}", "inicio")
+      .replace("{%title%}", "Página No Encontrada")
+      .replace(
+        "{%message%}",
+        "Lo sentimos, no se pudo encontrar la página que estás buscando.",
+      )
+  } else {
+    include_str!("assets/html/404.html")
+      .replace("{%head%}", &html::head(Some("Not Found"), Lang::English))
+      .replace("{%home_link%}", "/")
+      .replace("{%home_text%}", "home")
+      .replace("{%title%}", "Page Not Found")
+      .replace(
+        "{%message%}",
+        "Sorry, the page you are looking for could not be found.",
+      )
+  };
+
+  Cached::new(Html::new(&html), Cache::ONE_HOUR)
 }
 
 // helpers
