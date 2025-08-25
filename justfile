@@ -17,6 +17,11 @@ watch-css:
 format:
   prettier --write src/assets/html/*.html
 
+deploy:
+  rsync -av --delete --exclude target/ . jared@137.184.113.102:~/src
+  ssh jared@137.184.113.102 'cd ~/src && ~/.cargo/bin/cargo build --release -j1'
+
+# variables
 
 cssdir := "src/assets/css"
 # https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.12

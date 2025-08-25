@@ -3,6 +3,10 @@ name = "msf-zoe"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "msfzoe"
+path = "src/main.rs"
+
 [dependencies]
 aws-config = "1.1.7"
 aws-sdk-s3 = "1.19.0"
