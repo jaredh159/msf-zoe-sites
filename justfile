@@ -19,11 +19,17 @@ format:
   cargo fmt
 
 deploy:
-  rsync -av --delete --exclude target/ . jared@137.184.113.102:~/src
-  ssh jared@137.184.113.102 'cd ~/src && ~/.cargo/bin/cargo build --release -j1'
+  rsync -av --delete --exclude=target/ --exclude=.git . jared@{{ipaddr}}:~/app
+  scp .env.prod jared@{{ipaddr}}:~/.env
+  ssh jared@{{ipaddr}} 'cd ~/app && ~/.cargo/bin/cargo build --release'
+  ssh jared@{{ipaddr}} 'pm2 restart msfzoe'
+
+# pm2 start command for first time setup:
+# pm2 start "ROCKET_PORT=8080 ./app/target/release/msfzoe" --name "msfzoe"
 
 # variables
 
+ipaddr := "137.184.113.102"
 cssdir := "src/assets/css"
 # https://github.com/tailwindlabs/tailwindcss/releases/download/v4.1.12
 tailwind := "tailwindcss-cli-v4-1-2"

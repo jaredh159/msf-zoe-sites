@@ -2,4 +2,5 @@
 src/assets/css/output.css
 teachings.db
 .env
+.env*
 
