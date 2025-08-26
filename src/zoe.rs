@@ -1,5 +1,4 @@
 use crate::component;
-use crate::date;
 use crate::internal::*;
 
 pub fn get() -> Html {

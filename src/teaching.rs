@@ -25,7 +25,7 @@ impl Teaching {
 
   pub fn save(&self) -> Result<i64, String> {
     let conn = Connection::open("teachings.db").map_err(|e| e.to_string())?;
-    let result = conn.execute(
+    conn.execute(
       "INSERT INTO teachings (title, speaker, context, filename, filesize, duration, date) VALUES (?, ?, ?, ?, ?, ?, ?)",
       (
         &self.title,

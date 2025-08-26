@@ -1,5 +1,3 @@
-use crate::internal::*;
-
 #[derive(Debug, Clone)]
 pub struct Link {
   pub title: String,

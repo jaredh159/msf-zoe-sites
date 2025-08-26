@@ -1,9 +1,4 @@
-#![allow(dead_code)]
-#![allow(unused_variables)]
-#![allow(unused_imports)]
-
 use internal::*;
-use rocket::data::ToByteUnit;
 
 pub mod add_teaching;
 pub mod cached;
@@ -174,9 +169,9 @@ mod internal {
   pub use crate::html::{self, *};
   pub use crate::teaching::*;
   pub use crate::time;
-  pub use chrono::{Datelike, NaiveDateTime, Utc};
+  pub use chrono::{NaiveDateTime, Utc};
   pub use rocket::http::ContentType;
   pub use rocket::response::{Responder, Result as ResponseResult};
-  pub use rocket::{Request, Response, response::Redirect};
+  pub use rocket::{Request, response::Redirect};
   pub use rusqlite::{Connection, Result};
 }
