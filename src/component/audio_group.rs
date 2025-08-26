@@ -8,10 +8,7 @@ pub struct AudioGroup {
 
 impl AudioGroup {
   pub fn new(title: &str, teachings: Vec<Teaching>) -> Self {
-    Self {
-      title: title.to_string(),
-      teachings,
-    }
+    Self { title: title.to_string(), teachings }
   }
 
   pub fn html(&self) -> String {

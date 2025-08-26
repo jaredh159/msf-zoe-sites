@@ -16,6 +16,7 @@ watch-css:
 
 format:
   prettier --write src/assets/html/*.html
+  cargo fmt
 
 deploy:
   rsync -av --delete --exclude target/ . jared@137.184.113.102:~/src

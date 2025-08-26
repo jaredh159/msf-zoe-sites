@@ -63,13 +63,16 @@ pub async fn submit(
   if let Some(temp_path) = form.audio_file.path() {
     match crate::s3::upload_audio_file(temp_path.to_str().unwrap(), &filename).await {
       Ok(_) => match teaching.save() {
-        Ok(_) => Ok(Redirect::to("/add-teaching-5b2e3090?success=true")),
-        Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=1")),
+        Ok(_) => match crate::s3::backup_database().await {
+          Ok(_) => Ok(Redirect::to("/add-teaching-5b2e3090?success=true")),
+          Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=1")),
+        },
+        Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=2")),
       },
-      Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=2")),
+      Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=3")),
     }
   } else {
-    Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=3"))
+    Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=4"))
   }
 }
 

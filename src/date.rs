@@ -71,10 +71,10 @@ fn ordinal_suffix(day: u32) -> &'static str {
     11 | 12 | 13 => "th", // Special cases for 11th, 12th, 13th
     _ => match day % 10 {
       1 => "st",
-      2 => "nd", 
+      2 => "nd",
       3 => "rd",
       _ => "th",
-    }
+    },
   }
 }
 
@@ -82,7 +82,7 @@ pub fn gathering_year_to_display(year: u32, month: u32, day: u32) -> u32 {
   let current_date = NaiveDate::from_ymd_opt(year as i32, month, day).unwrap();
   let weekend_dates = spring_conf_weekend(year as i32);
   let memorial_monday = weekend_dates[2] + chrono::Duration::days(1); // Monday after Sunday
-  
+
   if current_date >= memorial_monday {
     // After the gathering ends, show next year's details
     year + 1
@@ -98,9 +98,21 @@ pub fn gathering_detail_dates(year: u32) -> (String, String, String, String) {
 
   (
     format!("{}{}", thursday.day(), ordinal_suffix(thursday.day())),
-    format!("{}{}", weekend_dates[0].day(), ordinal_suffix(weekend_dates[0].day())),
-    format!("{}{}", weekend_dates[1].day(), ordinal_suffix(weekend_dates[1].day())),
-    format!("{}{}", weekend_dates[2].day(), ordinal_suffix(weekend_dates[2].day())),
+    format!(
+      "{}{}",
+      weekend_dates[0].day(),
+      ordinal_suffix(weekend_dates[0].day())
+    ),
+    format!(
+      "{}{}",
+      weekend_dates[1].day(),
+      ordinal_suffix(weekend_dates[1].day())
+    ),
+    format!(
+      "{}{}",
+      weekend_dates[2].day(),
+      ordinal_suffix(weekend_dates[2].day())
+    ),
   )
 }
 
@@ -251,16 +263,16 @@ mod tests {
     // Test 2024 Memorial Day weekend (May 24-26)
     let (thursday, friday, saturday, sunday) = gathering_detail_dates(2024);
     assert_eq!(thursday, "23rd"); // Thursday May 23rd
-    assert_eq!(friday, "24th");   // Friday May 24th
+    assert_eq!(friday, "24th"); // Friday May 24th
     assert_eq!(saturday, "25th"); // Saturday May 25th
-    assert_eq!(sunday, "26th");   // Sunday May 26th
+    assert_eq!(sunday, "26th"); // Sunday May 26th
 
     // Test 2025 Memorial Day weekend (May 23-25)
     let (thursday, friday, saturday, sunday) = gathering_detail_dates(2025);
     assert_eq!(thursday, "22nd"); // Thursday May 22nd
-    assert_eq!(friday, "23rd");   // Friday May 23rd
+    assert_eq!(friday, "23rd"); // Friday May 23rd
     assert_eq!(saturday, "24th"); // Saturday May 24th
-    assert_eq!(sunday, "25th");   // Sunday May 25th
+    assert_eq!(sunday, "25th"); // Sunday May 25th
   }
 
   #[test]
@@ -270,12 +282,12 @@ mod tests {
     assert_eq!(ordinal_suffix(2), "nd");
     assert_eq!(ordinal_suffix(3), "rd");
     assert_eq!(ordinal_suffix(4), "th");
-    
+
     // Test teens (special cases)
     assert_eq!(ordinal_suffix(11), "th");
     assert_eq!(ordinal_suffix(12), "th");
     assert_eq!(ordinal_suffix(13), "th");
-    
+
     // Test twenties
     assert_eq!(ordinal_suffix(21), "st");
     assert_eq!(ordinal_suffix(22), "nd");
@@ -290,12 +302,12 @@ mod tests {
     assert_eq!(gathering_year_to_display(2024, 5, 24), 2024); // Friday of gathering
     assert_eq!(gathering_year_to_display(2024, 5, 25), 2024); // Saturday of gathering
     assert_eq!(gathering_year_to_display(2024, 5, 26), 2024); // Sunday of gathering
-    
+
     // Test dates after the gathering - should show next year
     assert_eq!(gathering_year_to_display(2024, 5, 27), 2025); // Memorial Monday 2024 -> show 2025
-    assert_eq!(gathering_year_to_display(2024, 6, 1), 2025);  // June 2024 -> show 2025
+    assert_eq!(gathering_year_to_display(2024, 6, 1), 2025); // June 2024 -> show 2025
     assert_eq!(gathering_year_to_display(2024, 12, 31), 2025); // December 2024 -> show 2025
-    
+
     // Test for 2025
     assert_eq!(gathering_year_to_display(2025, 5, 25), 2025); // Sunday of 2025 gathering
     assert_eq!(gathering_year_to_display(2025, 5, 26), 2026); // Memorial Monday 2025 -> show 2026

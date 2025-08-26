@@ -27,6 +27,13 @@ sudo systemctl status nginx
 sudo ufw allow 'Nginx Full'
 sudo ufw status
 
+# swap space, for compilation
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
 # install tree
 sudo apt install tree -y
 

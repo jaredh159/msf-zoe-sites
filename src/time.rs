@@ -94,7 +94,7 @@ mod tests {
       .unwrap()
       .and_hms_opt(12, 30, 45)
       .unwrap();
-    
+
     let result = format_rfc2822(datetime);
     assert_eq!(result, "Sun, 28 Jul 2024 12:30:45 GMT");
   }
@@ -105,7 +105,7 @@ mod tests {
       .unwrap()
       .and_hms_opt(9, 15, 0)
       .unwrap();
-    
+
     let result = format_rfc2822(datetime);
     assert_eq!(result, "Fri, 03 Jan 2025 09:15:00 GMT");
   }

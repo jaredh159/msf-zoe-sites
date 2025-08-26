@@ -68,4 +68,3 @@ fn serve_image(
     Cache::ONE_WEEK,
   )
 }
-

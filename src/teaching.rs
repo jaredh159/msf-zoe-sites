@@ -23,8 +23,8 @@ impl Teaching {
     Self::load_with_query("SELECT * FROM teachings ORDER BY date ASC", [])
   }
 
-  pub fn save(&self) -> Result<i64, Box<dyn std::error::Error>> {
-    let conn = Connection::open("teachings.db")?;
+  pub fn save(&self) -> Result<i64, String> {
+    let conn = Connection::open("teachings.db").map_err(|e| e.to_string())?;
     let result = conn.execute(
       "INSERT INTO teachings (title, speaker, context, filename, filesize, duration, date) VALUES (?, ?, ?, ?, ?, ?, ?)",
       (
@@ -36,7 +36,7 @@ impl Teaching {
         &self.duration,
         &format!("{} 12:00:00", self.date),
       ),
-    )?;
+    ).map_err(|e| e.to_string())?;
 
     Ok(conn.last_insert_rowid())
   }

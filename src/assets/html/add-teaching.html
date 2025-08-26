@@ -184,7 +184,7 @@
               const total = formatFileSize(e.total);
               uploadStatus.textContent = `Uploaded ${loaded} of ${total}`;
             } else {
-              uploadStatus.textContent = 'Processing upload...';
+              uploadStatus.textContent = 'Processing upload, this can take a minute...';
             }
           }
         });
@@ -359,6 +359,7 @@
               const url = new URL(window.location);
               url.searchParams.delete('success');
               url.searchParams.delete('error');
+              url.searchParams.delete('id');
               window.history.replaceState({}, '', url);
             }, 500);
           }, 5000);
@@ -403,4 +404,3 @@
     </script>
   </body>
 </html>
-
