@@ -10,11 +10,6 @@ pub fn apple_podcasts() -> Cached<(ContentType, &'static [u8])> {
   serve_image("webp", include_bytes!("assets/img/apple-podcasts.webp"))
 }
 
-#[rocket::get("/google-podcasts.webp")]
-pub fn google_podcasts() -> Cached<(ContentType, &'static [u8])> {
-  serve_image("webp", include_bytes!("assets/img/google-podcasts.webp"))
-}
-
 #[rocket::get("/overcast.webp")]
 pub fn overcast() -> Cached<(ContentType, &'static [u8])> {
   serve_image("webp", include_bytes!("assets/img/overcast.webp"))

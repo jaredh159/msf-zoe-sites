@@ -14,7 +14,8 @@ Both domains are on the msf aws account, `jared+msfaws@netrivet.com`.
 
 https://dash.cloudflare.com/4927bfdc7fcb7265c45b69b977d6bb4a/home/domains
 
-To deploy, run `just deploy`, but changes will lag behind CF cache.
+To deploy, run `just deploy`, but changes will lag behind CF cache. You can manually purge
+it from the CF dashboard.
 
 ## add teaching
 

@@ -53,3 +53,11 @@ sudo systemctl restart ssh
 
 # google current way to install RUST, 8/25 was:
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# install certbot
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --nginx
+
+# nginx config (after running certbot) -- see nginx.conf
+

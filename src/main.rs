@@ -38,7 +38,6 @@ fn rocket() -> _ {
         img::logo_webp,
         img::logo_svg,
         img::apple_podcasts,
-        img::google_podcasts,
         img::overcast,
         img::spotify,
         img::rss_png,
