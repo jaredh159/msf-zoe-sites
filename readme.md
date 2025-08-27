@@ -17,6 +17,14 @@ https://dash.cloudflare.com/4927bfdc7fcb7265c45b69b977d6bb4a/home/domains
 To deploy, run `just deploy`, but changes will lag behind CF cache. You can manually purge
 it from the CF dashboard.
 
+## rust version
+
+Created w/ rust 1.89.0, which is installed on the VM, because cross-compilation wasn't
+working due to C deps from aws or something. This should be pinned to only use 1.89.0
+because I'd rather not update rust on the server, as there is very little space on the
+disk. If you do need to update rust, you might have to clear out the target/ dir to free
+up space.
+
 ## add teaching
 
 To access the teaching upload form at `/add-teaching-5b2e3090`, you must set an
