@@ -11,6 +11,9 @@ serve:
 build-css:
   {{tailwind}} -i {{cssdir}}/styles.css -o {{cssdir}}/output.css
 
+build-css-prod:
+  {{tailwind}} --minify -i {{cssdir}}/styles.css -o {{cssdir}}/output.css
+
 watch-css:
   {{tailwind}} -i {{cssdir}}/styles.css -o {{cssdir}}/output.css --watch
 
@@ -19,10 +22,11 @@ format:
   cargo fmt
 
 deploy:
+  just build-css-prod
   rsync -av --delete --exclude=target/ --exclude=.git . jared@{{ipaddr}}:~/app
   scp .env.prod jared@{{ipaddr}}:~/.env
-  ssh jared@{{ipaddr}} 'cd ~/app && ~/.cargo/bin/cargo build --release'
-  ssh jared@{{ipaddr}} 'pm2 restart msfzoe'
+  ssh jared@{{ipaddr}} 'bash -l -c "cd ~/app && cargo build --release"'
+  ssh jared@{{ipaddr}} 'bash -l -c "source ~/.nvm/nvm.sh && pm2 restart msfzoe"'
 
 # pm2 start command for first time setup:
 # pm2 start "ROCKET_PORT=8080 ./app/target/release/msfzoe" --name "msfzoe"
