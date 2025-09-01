@@ -21,7 +21,14 @@ pub fn form(success: Option<bool>, error: Option<bool>) -> Html {
   };
 
   let html = include_str!("assets/html/add-teaching.html")
-    .replace("{%head%}", &html::head(Some("Add Teaching"), Lang::English))
+    .replace(
+      "{%head%}",
+      &html::head(
+        Some("Add Teaching"),
+        Lang::English,
+        "/add-teaching-5b2e3090",
+      ),
+    )
     .replace("{%flash_message%}", &flash_html);
 
   Html::new(&html)

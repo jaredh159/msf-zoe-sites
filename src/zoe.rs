@@ -3,7 +3,7 @@ use crate::internal::*;
 
 pub fn get() -> Html {
   let html = include_str!("assets/html/index.es.html")
-    .replace("{%head%}", &html::head(None, Lang::Spanish))
+    .replace("{%head%}", &html::head(None, Lang::Spanish, ""))
     .replace("{%hero%}", &component::Hero::new(Lang::Spanish).html())
     .replace(
       "{%audios%}",

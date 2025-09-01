@@ -31,7 +31,8 @@ To access the teaching upload form at `/add-teaching-5b2e3090`, you must set an
 authentication cookie in the browser console:
 
 ```javascript
-document.cookie = 'auth=<token>; path=/; expires=Fri, 31 Dec 2037 23:59:59 GMT';
+document.cookie =
+  'auth=f5300583-35ca-4a8a-8fb2-754f5468d5c4; path=/; expires=Fri, 31 Dec 2037 23:59:59 GMT';
 ```
 
 ## edit teaching db records

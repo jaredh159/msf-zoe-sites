@@ -65,7 +65,10 @@ fn audios() -> Cached<Html> {
   teachings.reverse();
   let podcast_links = include_str!("assets/html/podcast-links.html");
   let html = include_str!("assets/html/audios.html")
-    .replace("{%head%}", &html::head(Some("Audios"), Lang::English))
+    .replace(
+      "{%head%}",
+      &html::head(Some("Audios"), Lang::English, "/audios"),
+    )
     .replace("{%podcast_links%}", podcast_links)
     .replace(
       "{%audios%}",
@@ -87,7 +90,11 @@ fn gathering_details() -> Cached<Html> {
   let html = include_str!("assets/html/gathering-details.html")
     .replace(
       "{%head%}",
-      &html::head(Some("Spring Gathering Details"), Lang::English),
+      &html::head(
+        Some("Spring Gathering Details"),
+        Lang::English,
+        "/gathering-details",
+      ),
     )
     .replace("{%gathering_year%}", &display_year.to_string())
     .replace("{%thursday_day%}", &thursday)
@@ -138,7 +145,7 @@ fn not_found(req: &rocket::Request) -> Cached<Html> {
     include_str!("assets/html/404.html")
       .replace(
         "{%head%}",
-        &html::head(Some("No Encontrado"), Lang::Spanish),
+        &html::head(Some("No Encontrado"), Lang::Spanish, "404"),
       )
       .replace("{%home_link%}", "/zoe")
       .replace("{%home_text%}", "inicio")
@@ -149,7 +156,10 @@ fn not_found(req: &rocket::Request) -> Cached<Html> {
       )
   } else {
     include_str!("assets/html/404.html")
-      .replace("{%head%}", &html::head(Some("Not Found"), Lang::English))
+      .replace(
+        "{%head%}",
+        &html::head(Some("Not Found"), Lang::English, "404"),
+      )
       .replace("{%home_link%}", "/")
       .replace("{%home_text%}", "home")
       .replace("{%title%}", "Page Not Found")
