@@ -12,10 +12,13 @@
             <img src="/msf-logo.svg" alt="" class="h-[38px] mr-3.5" />
             <span class="text-gray-900">Audios</span>
           </h2>
-          <p class="text-base text-gray-700 leading-6 mb-8">
+          <p class="text-base text-gray-700 leading-6 mb-6">
             The audios offered below are recordings of informal (and generally
             extemporaneous) times of sharing or teaching from our Sunday morning meetings.
+            These messages are also available as a podcast.
           </p>
+
+          {%podcast_links%}
 
           <div class="grid grid-cols-1 gap-4">{%audios%}</div>
           <div class="text-right mt-6 italic">
@@ -23,7 +26,7 @@
               href="/audios"
               class="text-sm text-gray-500 hover:text-gray-700 transition-colors duration-200"
             >
-              more audios →
+              older audios →
             </a>
           </div>
         </section>

@@ -41,10 +41,12 @@ pub fn get() -> Html {
     String::new()
   };
 
+  let podcast_links = include_str!("assets/html/podcast-links.html");
   let html = include_str!("assets/html/index.en.html")
     .replace("{%head%}", &html::head(None, Lang::English))
     .replace("{%banner%}", &banner_html)
     .replace("{%hero%}", &component::Hero::new(Lang::English).html())
+    .replace("{%podcast_links%}", podcast_links)
     .replace(
       "{%audios%}",
       &teachings

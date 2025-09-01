@@ -63,8 +63,10 @@ fn zoe_home() -> Cached<Html> {
 fn audios() -> Cached<Html> {
   let mut teachings = Teaching::load_all();
   teachings.reverse();
+  let podcast_links = include_str!("assets/html/podcast-links.html");
   let html = include_str!("assets/html/audios.html")
     .replace("{%head%}", &html::head(Some("Audios"), Lang::English))
+    .replace("{%podcast_links%}", podcast_links)
     .replace(
       "{%audios%}",
       &teachings
