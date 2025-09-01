@@ -127,11 +127,7 @@
               <em
                 ><span class="text-red-600">Note:</span> It would be helpful if those
                 planning to come could let us know by emailing us at this address:
-                <a
-                  href="mailto:MSFPrinting@gmail.com"
-                  class="text-blue-600 hover:text-blue-800 underline"
-                  >MSFPrinting@gmail.com</a
-                >.</em
+                <span class="obfuscated-email font-mono">moc.liamg@gnitnirPFSM</span>.</em
               >
               This will help us plan ahead for food, childcare, etc. And if you are
               bringing children, please let us know their ages so we can plan accordingly.
@@ -145,17 +141,28 @@
 
             <h3 class="text-xl font-semibold text-gray-900 mb-4">Questions?</h3>
             <p class="text-base text-gray-700 leading-6">
-              Call Jason Henderson 330-714-5370 or Rod Costa at 330-419-1527 or email:
-              <a
-                href="mailto:MSFPrinting@gmail.com"
-                class="text-blue-600 hover:text-blue-800 underline"
-                >MSFPrinting@gmail.com</a
-              >
+              Call Jason Henderson 330-714-5370 or email:
+              <span class="obfuscated-email font-mono">moc.liamg@gnitnirPFSM</span>
               with any questions.
             </p>
           </div>
         </section>
       </main>
     </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const emailElements = document.querySelectorAll('.obfuscated-email');
+        emailElements.forEach(function (element) {
+          const reversedEmail = element.textContent;
+          const email = reversedEmail.split('').reverse().join('');
+          element.innerHTML =
+            '<a href="mailto:' +
+            email +
+            '" class="text-blue-600 hover:text-blue-800 underline transition-colors">' +
+            email +
+            '</a>';
+        });
+      });
+    </script>
   </body>
 </html>
