@@ -10,12 +10,31 @@ pub struct NewTeachingForm<'r> {
   pub date: String,
 }
 
-#[rocket::get("/add-teaching-5b2e3090?<success>&<error>")]
-pub fn form(success: Option<bool>, error: Option<bool>) -> Html {
+#[rocket::get("/add-teaching-5b2e3090?<success>&<error>&<auth>")]
+pub fn form(success: Option<bool>, error: Option<bool>, auth: Option<String>) -> Html {
   let flash_html = if success == Some(true) {
     flash_message(true, "Teaching added successfully!")
   } else if error == Some(true) {
-    flash_message(false, "Error saving teaching. Please try again.")
+    // Check if this is an auth error
+    if let Some(auth_error) = auth {
+      match auth_error.as_str() {
+        "missing" => flash_message(
+          false,
+          "Authentication required. Please log in with the admin token.",
+        ),
+        "invalid" => flash_message(
+          false,
+          "Invalid authentication token. Please check your credentials.",
+        ),
+        "config" => flash_message(
+          false,
+          "Server configuration error. Please contact the administrator.",
+        ),
+        _ => flash_message(false, "Error saving teaching. Please try again."),
+      }
+    } else {
+      flash_message(false, "Error saving teaching. Please try again.")
+    }
   } else {
     String::new()
   };
@@ -38,18 +57,18 @@ pub fn form(success: Option<bool>, error: Option<bool>) -> Html {
 pub async fn submit(
   form: rocket::form::Form<NewTeachingForm<'_>>,
   cookies: &rocket::http::CookieJar<'_>,
-) -> Result<rocket::response::Redirect, rocket::http::Status> {
+) -> rocket::response::Redirect {
   let _ = dotenvy::dotenv();
   let expected_auth = match std::env::var("ADMIN_AUTH_TOKEN") {
     Ok(token) => token,
-    Err(_) => return Err(rocket::http::Status::InternalServerError),
+    Err(_) => return Redirect::to("/add-teaching-5b2e3090?error=true&auth=config"),
   };
   if let Some(auth_cookie) = cookies.get("auth") {
     if auth_cookie.value() != expected_auth {
-      return Err(rocket::http::Status::Unauthorized);
+      return Redirect::to("/add-teaching-5b2e3090?error=true&auth=invalid");
     }
   } else {
-    return Err(rocket::http::Status::Unauthorized);
+    return Redirect::to("/add-teaching-5b2e3090?error=true&auth=missing");
   }
 
   let file_size = form.audio_file.len();
@@ -71,15 +90,15 @@ pub async fn submit(
     match crate::s3::upload_audio_file(temp_path.to_str().unwrap(), &filename).await {
       Ok(_) => match teaching.save() {
         Ok(_) => match crate::s3::backup_database().await {
-          Ok(_) => Ok(Redirect::to("/add-teaching-5b2e3090?success=true")),
-          Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=1")),
+          Ok(_) => Redirect::to("/add-teaching-5b2e3090?success=true"),
+          Err(_) => Redirect::to("/add-teaching-5b2e3090?error=true&id=1"),
         },
-        Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=2")),
+        Err(_) => Redirect::to("/add-teaching-5b2e3090?error=true&id=2"),
       },
-      Err(_) => Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=3")),
+      Err(_) => Redirect::to("/add-teaching-5b2e3090?error=true&id=3"),
     }
   } else {
-    Ok(Redirect::to("/add-teaching-5b2e3090?error=true&id=4"))
+    Redirect::to("/add-teaching-5b2e3090?error=true&id=4")
   }
 }
 
